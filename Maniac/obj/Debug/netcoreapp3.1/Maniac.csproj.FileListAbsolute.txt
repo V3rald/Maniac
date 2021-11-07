@@ -48,3 +48,4 @@ C:\Users\zolcs\source\repos\Maniac\Maniac\obj\Debug\netcoreapp3.1\Maniac.csproj.
 C:\Users\zolcs\source\repos\Maniac\Maniac\obj\Debug\netcoreapp3.1\Maniac.dll
 C:\Users\zolcs\source\repos\Maniac\Maniac\obj\Debug\netcoreapp3.1\Maniac.pdb
 C:\Users\zolcs\source\repos\Maniac\Maniac\obj\Debug\netcoreapp3.1\Maniac.genruntimeconfig.cache
+C:\Users\zolcs\source\repos\Maniac\Maniac\obj\Debug\netcoreapp3.1\Maniac.csprojAssemblyReference.cache

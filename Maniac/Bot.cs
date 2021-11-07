@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Maniac.Api;
+using Maniac.Model;
 
 namespace Maniac
 {
@@ -21,13 +23,18 @@ namespace Maniac
 
         public static DiscordClient Client { get; private set; }
         public static CommandsNextExtension Commands { get; private set; }
+        public static Config Config { get; private set; }
+        public static Token Token { get; private set; }
         static async Task Run()
         {
-            Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
+            Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
+
+            Authentication authentication = new Authentication();
+            Token = authentication.getToken().Result;
 
             Client = new DiscordClient(new DiscordConfiguration
             {
-                Token = config.token,
+                Token = Config.token,
                 TokenType = TokenType.Bot,
             });
 
@@ -35,11 +42,12 @@ namespace Maniac
 
             Commands = Client.UseCommandsNext(new CommandsNextConfiguration
             {
-                StringPrefixes = new string[] { config.prefix },
+                StringPrefixes = new string[] { Config.prefix },
                 EnableDms = false
             });
 
             Commands.RegisterCommands<PingCommand>();
+            Commands.RegisterCommands<RecentCommand>();
 
             await Client.ConnectAsync();
             await Task.Delay(-1);

@@ -49,3 +49,9 @@ C:\Users\zolcs\source\repos\Maniac\Maniac\obj\Debug\netcoreapp3.1\Maniac.dll
 C:\Users\zolcs\source\repos\Maniac\Maniac\obj\Debug\netcoreapp3.1\Maniac.pdb
 C:\Users\zolcs\source\repos\Maniac\Maniac\obj\Debug\netcoreapp3.1\Maniac.genruntimeconfig.cache
 C:\Users\zolcs\source\repos\Maniac\Maniac\obj\Debug\netcoreapp3.1\Maniac.csprojAssemblyReference.cache
+C:\Users\zolcs\source\repos\Maniac\Maniac\obj\Debug\netcoreapp3.1\Maniac.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\zolcs\source\repos\Maniac\Maniac\bin\Debug\netcoreapp3.1\Refit.dll
+C:\Users\zolcs\source\repos\Maniac\Maniac\bin\Debug\netcoreapp3.1\System.Net.Http.Json.dll
+C:\Users\zolcs\source\repos\Maniac\Maniac\bin\Debug\netcoreapp3.1\System.Text.Encodings.Web.dll
+C:\Users\zolcs\source\repos\Maniac\Maniac\bin\Debug\netcoreapp3.1\System.Text.Json.dll
+C:\Users\zolcs\source\repos\Maniac\Maniac\bin\Debug\netcoreapp3.1\Refit.Newtonsoft.Json.dll

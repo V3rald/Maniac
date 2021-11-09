@@ -17,17 +17,15 @@ namespace Maniac.Commands
         {
             if(int.TryParse(userId, out int id))
             {
-                Users users = new Users();
-                Recent[] recent = users.getRecent(id).Result;
-                if(recent.Length >= 1)
+                RecentActivity[] recentActivity = UsersService.GetUserRecentActivity(id);
+                if(recentActivity.Length >= 1)
                 {
-                    Recent play = recent[0];
-                    Beatmaps beatmaps = new Beatmaps();
+                    RecentActivity play = recentActivity[0];
 
                     Regex rx = new Regex(@"\d+");
                     Match match = rx.Match(play.Beatmap.Url);
 
-                    BeatmapUserScore beatmapUserScore = await beatmaps.getUserBeatmapScore(id, int.Parse(match.Value));
+                    BeatmapUserScore beatmapUserScore = BeatmapsService.GetBeatmapUserScore(int.Parse(match.Value), id);
                     BeatmapUserScore.ScoreObject score = beatmapUserScore.Score;
                     await ctx.Channel.SendMessageAsync("Beatmap: " + play.Beatmap.Title + "\n" +
                         "Accuracy: " + Math.Round(score.Accuracy * 100, 2) + "\n" +

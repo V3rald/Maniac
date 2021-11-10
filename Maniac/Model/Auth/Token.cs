@@ -3,15 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Maniac.Model
+namespace Maniac.Model.Auth
 {
-    class Token
+    public class Token
     {
         [JsonProperty("token_type")]
-        public string TokenType { get; private set; }
+        public string TokenType { get; set; }
         [JsonProperty("expires_in")]
-        public int ExpiresIn { get; private set; }
+        public int ExpiresIn { get; set; }
         [JsonProperty("access_token")]
-        public string AccessToken { get; private set; }
+        public string AccessToken { get; set; }
     }
 }

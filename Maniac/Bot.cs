@@ -11,6 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Maniac.Api;
 using Maniac.Model;
+using Maniac.Model.Auth;
+using System.Net.Http;
+using Refit;
 
 namespace Maniac
 {
@@ -20,7 +23,7 @@ namespace Maniac
         {
             Run().GetAwaiter().GetResult();
         }
-
+        public static string BaseUrl = "https://osu.ppy.sh";
         public static DiscordClient Client { get; private set; }
         public static CommandsNextExtension Commands { get; private set; }
         public static Config Config { get; private set; }
@@ -29,8 +32,7 @@ namespace Maniac
         {
             Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
 
-            Authentication authentication = new Authentication();
-            Token = authentication.getToken().Result;
+            Token = AuthService.GetToken(new GetToken(Config.ClientId, Config.ClientSecret, "client_credentials", "public"));
 
             Client = new DiscordClient(new DiscordConfiguration
             {

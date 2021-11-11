@@ -24,6 +24,7 @@ namespace Maniac
             Run().GetAwaiter().GetResult();
         }
         public static string BaseUrl = "https://osu.ppy.sh";
+        public static string BaseUrlV2 = "https://osu.ppy.sh/api/v2";
         public static DiscordClient Client { get; private set; }
         public static CommandsNextExtension Commands { get; private set; }
         public static Config Config { get; private set; }
@@ -49,7 +50,7 @@ namespace Maniac
             });
 
             Commands.RegisterCommands<PingCommand>();
-            Commands.RegisterCommands<RecentCommand>();
+            Commands.RegisterCommands<OsuCommands>();
 
             await Client.ConnectAsync();
             await Task.Delay(-1);

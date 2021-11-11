@@ -3,6 +3,8 @@ using DSharpPlus.CommandsNext.Attributes;
 using Maniac.Api;
 using Maniac.Model;
 using Maniac.Model.Auth;
+using Maniac.Model.Beatmaps;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Maniac.Commands
 {
-    class RecentCommand : BaseCommandModule
+    class OsuCommands : BaseCommandModule
     {
         [Command("recent")]
         public async Task recent(CommandContext ctx, string userId)
@@ -26,7 +28,7 @@ namespace Maniac.Commands
                     Regex rx = new Regex(@"\d+");
                     Match match = rx.Match(play.Beatmap.Url);
 
-                    BeatmapUserScore beatmapUserScore = BeatmapsService.GetBeatmapUserScore(int.Parse(match.Value), id);
+                    BeatmapUserScore beatmapUserScore = BeatmapsService.GetBeatmapUserScore(Bot.Token.AccessToken, int.Parse(match.Value), id);
                     BeatmapUserScore.ScoreObject score = beatmapUserScore.Score;
                     await ctx.Channel.SendMessageAsync("Beatmap: " + play.Beatmap.Title + "\n" +
                         "Accuracy: " + Math.Round(score.Accuracy * 100, 2) + "\n" +
@@ -59,6 +61,19 @@ namespace Maniac.Commands
             {
                 await ctx.Channel.SendMessageAsync("bruh").ConfigureAwait(false);
             }
+        }
+
+        [Command("search")]
+        public async Task search(CommandContext ctx, string q)
+        {
+            SearchBeatmap searchBeatmap = BeatmapsService.SearchBeatmap(Bot.Token.AccessToken, q);
+
+            var beatmap = searchBeatmap.beatmapsets[0];
+            var beatmapJson = JsonConvert.SerializeObject(beatmap);
+
+            Console.WriteLine(beatmapJson);
+
+            Console.WriteLine(ctx.User.Username + $" used command: {ctx.Command.Name} {q}");
         }
     }
 }

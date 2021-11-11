@@ -1,6 +1,7 @@
 ﻿using Maniac.Api.Api;
 using Maniac.Model;
 using Maniac.Model.Auth;
+using Maniac.Model.Beatmaps;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,18 @@ namespace Maniac.Api
         private static readonly Beatmaps beatmaps;
         static BeatmapsService()
         {
-            //var httpClient = new HttpClient(new HttpClientDiagnosticsHandler(new HttpClientHandler())) { BaseAddress = new Uri(Bot.BaseUrl) };
-            beatmaps = RestService.For<Beatmaps>(Bot.BaseUrl, new RefitSettings(new NewtonsoftJsonContentSerializer()));
+            //var httpClient = new HttpClient(new HttpClientDiagnosticsHandler(new HttpClientHandler())) { BaseAddress = new Uri(Bot.BaseUrlV2) };
+            beatmaps = RestService.For<Beatmaps>(Bot.BaseUrlV2, new RefitSettings(new NewtonsoftJsonContentSerializer()));
         }
 
-        public static BeatmapUserScore GetBeatmapUserScore(int beatmap, int user)
+        public static BeatmapUserScore GetBeatmapUserScore(string token, int beatmap, int user)
         {
-            return beatmaps.GetBeatmapUserScore(beatmap, user).Result;
+            return beatmaps.GetBeatmapUserScore(token, beatmap, user).Result;
+        }
+
+        public static SearchBeatmap SearchBeatmap(string token, string q)
+        {
+            return beatmaps.SearchBeatmap(token, q).Result;
         }
     }
 }

@@ -23,7 +23,6 @@ namespace Maniac
         {
             Run().GetAwaiter().GetResult();
         }
-        public static string BaseUrl = "https://osu.ppy.sh";
         public static DiscordClient Client { get; private set; }
         public static CommandsNextExtension Commands { get; private set; }
         public static Config Config { get; private set; }

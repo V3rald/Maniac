@@ -1,4 +1,5 @@
 ﻿using Maniac.Api.Api;
+using Maniac.Common;
 using Maniac.Model;
 using Maniac.Model.Auth;
 using Refit;
@@ -16,7 +17,7 @@ namespace Maniac.Api
         private static readonly Users users;
         static UsersService()
         {
-            users = RestService.For<Users>(Bot.BaseUrl, new RefitSettings(new NewtonsoftJsonContentSerializer()));
+            users = RestService.For<Users>(Constants.BaseUrl, new RefitSettings(new NewtonsoftJsonContentSerializer()));
         }
 
         public static RecentActivity[] GetUserRecentActivity(int user, int limit = 1, int offset = 0)

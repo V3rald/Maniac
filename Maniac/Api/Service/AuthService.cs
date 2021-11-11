@@ -1,4 +1,5 @@
-﻿using Maniac.Model;
+﻿using Maniac.Common;
+using Maniac.Model;
 using Maniac.Model.Auth;
 using Refit;
 using System;
@@ -15,7 +16,7 @@ namespace Maniac.Api
         private static readonly Auth auth;
         static AuthService()
         {
-            auth = RestService.For<Auth>(Bot.BaseUrl, new RefitSettings(new NewtonsoftJsonContentSerializer()));
+            auth = RestService.For<Auth>(Constants.BaseUrl, new RefitSettings(new NewtonsoftJsonContentSerializer()));
         }
 
         public static Token GetToken(GetToken getToken)

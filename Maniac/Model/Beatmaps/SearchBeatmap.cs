@@ -8,7 +8,7 @@ namespace Maniac.Model.Beatmaps
     public class SearchBeatmap
     {
         public List<BeatmapsetObject> beatmapsets { get; set; }
-        public object cursor { get; set; }
+        public CursorObject cursor { get; set; }
         public SearchObject search { get; set; }
         public object recommended_difficulty { get; set; }
         public object error { get; set; }
@@ -30,20 +30,20 @@ namespace Maniac.Model.Beatmaps
             public string status { get; set; }
             public string title { get; set; }
             public string title_unicode { get; set; }
-            public object track_id { get; set; }
+            public int? track_id { get; set; }
             public int user_id { get; set; }
             public bool video { get; set; }
             public AvailabilityObject availability { get; set; }
-            public int bpm { get; set; }
+            public double bpm { get; set; }
             public bool can_be_hyped { get; set; }
             public bool discussion_enabled { get; set; }
             public bool discussion_locked { get; set; }
             public bool is_scoreable { get; set; }
-            public DateTime last_updated { get; set; }
+            public DateTime? last_updated { get; set; }
             public string legacy_thread_url { get; set; }
             public NominationsSummaryObject nominations_summary { get; set; }
             public int ranked { get; set; }
-            public DateTime ranked_date { get; set; }
+            public DateTime? ranked_date { get; set; }
             public bool storyboard { get; set; }
             public DateTime submitted_date { get; set; }
             public string tags { get; set; }
@@ -93,7 +93,7 @@ namespace Maniac.Model.Beatmaps
                 public string version { get; set; }
                 public double accuracy { get; set; }
                 public double ar { get; set; }
-                public int bpm { get; set; }
+                public double bpm { get; set; }
                 public bool convert { get; set; }
                 public int count_circles { get; set; }
                 public int count_sliders { get; set; }
@@ -117,6 +117,12 @@ namespace Maniac.Model.Beatmaps
         public class SearchObject
         {
             public string sort { get; set; }
+        }
+
+        public class CursorObject
+        {
+            public double _score { get; set; }
+            public string _id { get; set; }
         }
     }
 }

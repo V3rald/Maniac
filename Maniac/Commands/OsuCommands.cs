@@ -1,5 +1,6 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Entities;
 using Maniac.Api;
 using Maniac.Model;
 using Maniac.Model.Auth;
@@ -7,6 +8,7 @@ using Maniac.Model.Beatmaps;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -33,9 +35,9 @@ namespace Maniac.Commands
                     await ctx.Channel.SendMessageAsync("Beatmap: " + play.Beatmap.Title + "\n" +
                         "Accuracy: " + Math.Round(score.Accuracy * 100, 2) + "\n" +
                         "Bpm: " + score.Beatmap.Bpm + "\n" +
-                        "SR: " + score.Beatmap.difficulty_rating + "\n" +
-                        "HP: " + score.Beatmap.Hp + "\n" +
-                        "OD: " + score.Beatmap.Od + "\n" +
+                        "SR: " + score.Beatmap.DifficultyRating + "\n" +
+                        "HP: " + score.Beatmap.HP + "\n" +
+                        "OD: " + score.Beatmap.OD + "\n" +
                         "Status: " + score.Beatmap.Status + "\n" +
                         "Length: " + score.Beatmap.TotalLength + "\n" +
                         "Max Combo: " + score.MaxCombo + "\n" +
@@ -67,11 +69,27 @@ namespace Maniac.Commands
         public async Task search(CommandContext ctx, string q)
         {
             SearchBeatmap searchBeatmap = BeatmapsService.SearchBeatmap(Bot.Token.AccessToken, q);
+            var filteredBeatmapSets = searchBeatmap.beatmapsets.Where(p => p.beatmaps.Any(b => b.mode == "mania")).ToList();
 
-            var beatmap = searchBeatmap.beatmapsets[0];
-            var beatmapJson = JsonConvert.SerializeObject(beatmap);
+            List<DiscordSelectComponentOption> menuItems = new List<DiscordSelectComponentOption>();
+            for (int i = 0; i < Math.Min(25, filteredBeatmapSets.Count); i++)
+            {
+                var beatmapSet = filteredBeatmapSets[i];
+                string json = JsonConvert.SerializeObject(new Dictionary<string, string>()
+                {
+                    { "type", "beatmapset" },
+                    { "i", i.ToString() },
+                    { "q", q },
+                    { "b", beatmapSet.id.ToString() }
+                });
+                menuItems.Add(new DiscordSelectComponentOption($"{beatmapSet.artist}: {beatmapSet.title}", $"{json}", $"Status: {beatmapSet.status}"));
+            }
 
-            Console.WriteLine(beatmapJson);
+            var dropdown = new DiscordSelectComponent("dropdown", null, menuItems, false, 1, 1);
+
+            var builder = new DiscordMessageBuilder().WithContent($"Search for {q}").AddComponents(dropdown);
+
+            await ctx.Channel.SendMessageAsync(builder);
 
             Console.WriteLine(ctx.User.Username + $" used command: {ctx.Command.Name} {q}");
         }

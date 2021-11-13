@@ -17,8 +17,8 @@ namespace Maniac.Api
         private static readonly Beatmaps beatmaps;
         static BeatmapsService()
         {
-            //var httpClient = new HttpClient(new HttpClientDiagnosticsHandler(new HttpClientHandler())) { BaseAddress = new Uri(Bot.BaseUrlV2) };
-            beatmaps = RestService.For<Beatmaps>(Bot.BaseUrlV2, new RefitSettings(new NewtonsoftJsonContentSerializer()));
+            var httpClient = new HttpClient(new HttpClientDiagnosticsHandler(new HttpClientHandler())) { BaseAddress = new Uri(Bot.BaseUrlV2) };
+            beatmaps = RestService.For<Beatmaps>(httpClient, new RefitSettings(new NewtonsoftJsonContentSerializer()));
         }
 
         public static BeatmapUserScore GetBeatmapUserScore(string token, int beatmap, int user)

@@ -52,15 +52,15 @@ namespace Maniac.Model.Auth
             public class BeatmapObject
             {
                 [JsonProperty("difficulty_rating")]
-                public float difficulty_rating { get; set; }
+                public float DifficultyRating { get; set; }
                 [JsonProperty("status")]
                 public string Status { get; set; }
                 [JsonProperty("total_length")]
                 public int TotalLength { get; set; }
                 [JsonProperty("accuracy")]
-                public float Od { get; set; }
+                public float OD { get; set; }
                 [JsonProperty("drain")]
-                public float Hp { get; set; }
+                public float HP { get; set; }
                 [JsonProperty("bpm")]
                 public float Bpm { get; set; }
             }

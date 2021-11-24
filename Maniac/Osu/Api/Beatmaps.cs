@@ -15,6 +15,6 @@ namespace Maniac.Api.Api
         Task<BeatmapUserScore> GetBeatmapUserScore([Authorize("Bearer")] string token, int beatmap, int user);
 
         [Get("/beatmapsets/search")]
-        Task<SearchBeatmap> SearchBeatmap([Authorize("Bearer")] string token, string q);
+        Task<SearchBeatmap> SearchBeatmap([Authorize("Bearer")] string token, string q, string s);
     }
 }

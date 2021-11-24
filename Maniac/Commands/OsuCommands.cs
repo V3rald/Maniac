@@ -2,9 +2,12 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Maniac.Api;
+using Maniac.Common;
 using Maniac.Model;
 using Maniac.Model.Auth;
 using Maniac.Model.Beatmaps;
+using Maniac.Model.SelectMenu;
+using Maniac.Util;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -66,30 +69,23 @@ namespace Maniac.Commands
         }
 
         [Command("search")]
-        public async Task search(CommandContext ctx, string q)
+        public async Task search(CommandContext ctx, params string[] args)
         {
-            SearchBeatmap searchBeatmap = BeatmapsService.SearchBeatmap(Bot.Token.AccessToken, q);
-            var filteredBeatmapSets = searchBeatmap.beatmapsets.Where(p => p.beatmaps.Any(b => b.mode == "mania")).ToList();
-
-            List<DiscordSelectComponentOption> menuItems = new List<DiscordSelectComponentOption>();
-            for (int i = 0; i < Math.Min(25, filteredBeatmapSets.Count); i++)
+            ulong messageId = ctx.Message.Id;
+            string q = string.Join(" ", args);
+            List<DiscordSelectComponentOption> statusItems = new List<DiscordSelectComponentOption>();
+            foreach(var status in Enum.GetValues(typeof(Constants.Status)))
             {
-                var beatmapSet = filteredBeatmapSets[i];
-                string json = JsonConvert.SerializeObject(new Dictionary<string, string>()
-                {
-                    { "type", "beatmapset" },
-                    { "i", i.ToString() },
-                    { "q", q },
-                    { "b", beatmapSet.id.ToString() }
-                });
-                menuItems.Add(new DiscordSelectComponentOption($"{beatmapSet.artist}: {beatmapSet.title}", $"{json}", $"Status: {beatmapSet.status}"));
+                statusItems.Add(new DiscordSelectComponentOption($"{status}", $"status:{(int)status}"));
             }
-
-            var dropdown = new DiscordSelectComponent("dropdown", null, menuItems, false, 1, 1);
-
+            var dropdown = new DiscordSelectComponent("dropdown", null, statusItems, false, 1, 1);
             var builder = new DiscordMessageBuilder().WithContent($"Search for {q}").AddComponents(dropdown);
+            var interactionMessage = await ctx.Channel.SendMessageAsync(builder);
 
-            await ctx.Channel.SendMessageAsync(builder);
+            StatusMenu data = new StatusMenu(q);
+            SelectMenuUtil.Menus.Add(messageId, JsonConvert.SerializeObject(data));
+            SelectMenuUtil.MessageId.Add(interactionMessage.Id, messageId);
+            SelectMenuUtil.UserId.Add(interactionMessage.Id, ctx.User.Id);
 
             Console.WriteLine(ctx.User.Username + $" used command: {ctx.Command.Name} {q}");
         }

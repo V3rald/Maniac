@@ -45,7 +45,7 @@ namespace Maniac.Model.Beatmaps
             public int ranked { get; set; }
             public DateTime? ranked_date { get; set; }
             public bool storyboard { get; set; }
-            public DateTime submitted_date { get; set; }
+            public DateTime? submitted_date { get; set; }
             public string tags { get; set; }
             public List<BeatmapObject> beatmaps { get; set; }
 
@@ -72,7 +72,7 @@ namespace Maniac.Model.Beatmaps
             public class AvailabilityObject
             {
                 public bool download_disabled { get; set; }
-                public object more_information { get; set; }
+                public string more_information { get; set; }
             }
 
             public class NominationsSummaryObject

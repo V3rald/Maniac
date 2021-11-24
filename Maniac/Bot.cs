@@ -19,6 +19,10 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Enums;
 using Maniac.Model.Beatmaps;
 using DSharpPlus.Entities;
+using Maniac.Util;
+using Maniac.Model.SelectMenu;
+using System.Linq;
+using Maniac.Model.BeatmapSetMenu;
 
 namespace Maniac
 {
@@ -70,46 +74,32 @@ namespace Maniac
 
         private static async Task OnComponentInteractionCreated(DiscordClient sender, ComponentInteractionCreateEventArgs e)
         {
-            var response = JsonConvert.DeserializeObject<Dictionary<string, string>>(e.Values[0]);
-            var type = response["type"];
+            var interactionId = e.Message.Id;
+            var userId = SelectMenuUtil.UserId[interactionId];
+            if (userId != e.User.Id)
+            {
+                await e.Interaction.CreateResponseAsync(InteractionResponseType.DeferredMessageUpdate);
+                return;
+            }
+
+            var messageId = SelectMenuUtil.MessageId[interactionId];
+            var json = SelectMenuUtil.Menus[messageId];
+
+            var type = e.Values[0].Split(':')[0];
+            int selectId = int.Parse(e.Values[0].Split(':')[1]);
+
             switch (type)
             {
+                case "status":
+                    SelectMenuUtil.StatusInteraction(e, messageId, JsonConvert.DeserializeObject<StatusMenu>(json), selectId);
+                    break;
                 case "beatmapset":
-                    var q = response["q"];
-                    var beatmapId = response["b"];
-                    SearchBeatmap searchBeatmap = BeatmapsService.SearchBeatmap(Token.AccessToken, q);
-                    var beatmaps = new List<SearchBeatmap.BeatmapsetObject.BeatmapObject>();
-                    foreach (var beatmapSet in searchBeatmap.beatmapsets)
-                    {
-                        if (beatmapSet.id.ToString() == beatmapId)
-                        {
-                            beatmaps.AddRange(beatmapSet.beatmaps);
-                            break;
-                        }
-                    }
-
-                    List<DiscordSelectComponentOption> menuItems = new List<DiscordSelectComponentOption>();
-                    for (int i = 0; i < Math.Min(25, beatmaps.Count); i++)
-                    {
-                        var beatmap = beatmaps[i];
-                        Dictionary<string, string> id = new Dictionary<string, string>()
-                        {
-                            { "type", "beatmap" },
-                            { "i", i.ToString() },
-                            { "b", beatmap.id.ToString() }
-                        };
-                        string json = JsonConvert.SerializeObject(id);
-                        menuItems.Add(new DiscordSelectComponentOption($"{beatmap.version}", $"{json}", $"id: {beatmap.beatmapset_id}"));
-                    }
-
-                    var dropdown = new DiscordSelectComponent("dropdown", null, menuItems, false, 1, 1);
-
-                    var builder = new DiscordMessageBuilder().WithContent($"Search for {q}").AddComponents(dropdown);
-
-                    await e.Message.ModifyAsync(builder).ConfigureAwait(false);
+                    SelectMenuUtil.BeatmapSetInteraction(e, messageId, JsonConvert.DeserializeObject<BeatmapSetMenu>(json), selectId);
                     break;
                 case "beatmap":
-                    var selectedBuilder = new DiscordMessageBuilder().WithContent("Selected!");
+                    BeatmapMenu beatmap = JsonConvert.DeserializeObject<BeatmapMenu>(json);
+
+                    var selectedBuilder = new DiscordMessageBuilder().WithContent("Selected: " + beatmap.Beatmaps[selectId].id);
                     await e.Message.ModifyAsync(selectedBuilder).ConfigureAwait(false);
                     break;
             }

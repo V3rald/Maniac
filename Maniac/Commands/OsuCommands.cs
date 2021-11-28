@@ -26,14 +26,53 @@ namespace Maniac.Commands
             if (ulong.TryParse(id, out ulong osuUserId))
             {
                 ulong discordUserId = ctx.User.Id;
-                DB.addUser(discordUserId, osuUserId);
+                if(DB.getUser(discordUserId) != null)
+                {
+                    DB.addUser(discordUserId, osuUserId);
+                    await ctx.Channel.SendMessageAsync("Linked!").ConfigureAwait(false);
+                    return;
+                }
+            }
 
-                await ctx.Channel.SendMessageAsync("Linked!").ConfigureAwait(false);
-            }
-            else
+            await ctx.Channel.SendMessageAsync("bruh").ConfigureAwait(false);
+        }
+
+        [Command("pp")]
+        public async Task maniapp(CommandContext ctx, double sr, float od, int score, int oc)
+        {
+            double m = 0;
+            double l;
+            double k;
+            double scaler;
+            scaler = 0.8;
+            l = Math.Pow(5 * Math.Max(1, sr / 0.2) - 4, 2.2) / 135 * (1 + 0.1 * Math.Min(1, oc / 1500));
+            k = od / 10 * 0.2 * l * Math.Pow((Math.Max(score, 960000) - 960000) / 40000, 1.1);
+            if (score <= 500000)
             {
-                await ctx.Channel.SendMessageAsync("bruh").ConfigureAwait(false);
+                m = 0.0 * (score / 500000);
             }
+            else if (score <= 600000)
+            {
+                m = 0.3 * ((score - 500000) / 100000) + 0.0;
+            }
+            else if (score <= 700000)
+            {
+                m = 0.25 * ((score - 600000) / 100000) + 0.3;
+            }
+            else if (score <= 800000)
+            {
+                m = 0.2 * ((score - 700000) / 100000) + 0.55;
+            }
+            else if (score <= 900000)
+            {
+                m = 0.15 * ((score - 800000) / 100000) + 0.75;
+            }
+            else if (score >= 900000)
+            {
+                m = 0.1 * ((score - 900000) / 100000) + 0.9;
+            }
+            double pp = Math.Pow(Math.Pow(k, 1.1) + Math.Pow(l * m, 1.1), 1 / 1.1) * scaler;
+            await ctx.Channel.SendMessageAsync($"{Math.Round(pp, 2)}").ConfigureAwait(false);
         }
 
         [Command("recent")]

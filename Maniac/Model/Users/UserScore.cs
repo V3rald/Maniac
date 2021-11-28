@@ -6,135 +6,66 @@ using System.Globalization;
 using System.Text;
 using static Maniac.Common.Constants;
 
-namespace Maniac.Model.Beatmaps
+namespace Maniac.Model.Users
 {
-    public partial class SearchBeatmap
+    public partial class UserScore
     {
-        [JsonProperty("beatmapsets")]
-        public List<Beatmapset> Beatmapsets { get; set; }
-
-        [JsonProperty("cursor")]
-        public Cursor Cursor { get; set; }
-
-        [JsonProperty("search")]
-        public Search Search { get; set; }
-
-        [JsonProperty("recommended_difficulty")]
-        public object RecommendedDifficulty { get; set; }
-
-        [JsonProperty("error")]
-        public object Error { get; set; }
-
-        [JsonProperty("total")]
-        public long Total { get; set; }
-    }
-
-    public partial class Beatmapset
-    {
-        [JsonProperty("artist")]
-        public string Artist { get; set; }
-
-        [JsonProperty("artist_unicode")]
-        public string ArtistUnicode { get; set; }
-
-        [JsonProperty("covers")]
-        public Covers Covers { get; set; }
-
-        [JsonProperty("creator")]
-        public string Creator { get; set; }
-
-        [JsonProperty("favourite_count")]
-        public long FavouriteCount { get; set; }
-
-        [JsonProperty("hype")]
-        public NominationsSummary Hype { get; set; }
-
         [JsonProperty("id")]
         public long Id { get; set; }
-
-        [JsonProperty("nsfw")]
-        public bool Nsfw { get; set; }
-
-        [JsonProperty("play_count")]
-        public long PlayCount { get; set; }
-
-        [JsonProperty("preview_url")]
-        public string PreviewUrl { get; set; }
-
-        [JsonProperty("source")]
-        public string Source { get; set; }
-
-        [JsonProperty("status")]
-        public Status Status { get; set; }
-
-        [JsonProperty("title")]
-        public string Title { get; set; }
-
-        [JsonProperty("title_unicode")]
-        public string TitleUnicode { get; set; }
-
-        [JsonProperty("track_id")]
-        public long? TrackId { get; set; }
 
         [JsonProperty("user_id")]
         public long UserId { get; set; }
 
-        [JsonProperty("video")]
-        public bool Video { get; set; }
+        [JsonProperty("accuracy")]
+        public double Accuracy { get; set; }
 
-        [JsonProperty("availability")]
-        public Availability Availability { get; set; }
+        [JsonProperty("mods")]
+        public List<string> Mods { get; set; }
 
-        [JsonProperty("bpm")]
-        public double Bpm { get; set; }
+        [JsonProperty("score")]
+        public long Score { get; set; }
 
-        [JsonProperty("can_be_hyped")]
-        public bool CanBeHyped { get; set; }
+        [JsonProperty("max_combo")]
+        public long MaxCombo { get; set; }
 
-        [JsonProperty("discussion_enabled")]
-        public bool DiscussionEnabled { get; set; }
+        [JsonProperty("passed")]
+        public bool Passed { get; set; }
 
-        [JsonProperty("discussion_locked")]
-        public bool DiscussionLocked { get; set; }
+        [JsonProperty("perfect")]
+        public bool Perfect { get; set; }
 
-        [JsonProperty("is_scoreable")]
-        public bool IsScoreable { get; set; }
+        [JsonProperty("statistics")]
+        public Statistics Statistics { get; set; }
 
-        [JsonProperty("last_updated")]
-        public DateTimeOffset LastUpdated { get; set; }
+        [JsonProperty("rank")]
+        public string Rank { get; set; }
 
-        [JsonProperty("legacy_thread_url")]
-        public Uri LegacyThreadUrl { get; set; }
+        [JsonProperty("created_at")]
+        public DateTimeOffset CreatedAt { get; set; }
 
-        [JsonProperty("nominations_summary")]
-        public NominationsSummary NominationsSummary { get; set; }
+        [JsonProperty("best_id")]
+        public long? BestId { get; set; }
 
-        [JsonProperty("ranked")]
-        public long Ranked { get; set; }
+        [JsonProperty("pp")]
+        public double? Pp { get; set; }
 
-        [JsonProperty("ranked_date")]
-        public DateTimeOffset? RankedDate { get; set; }
+        [JsonProperty("mode")]
+        public Mode Mode { get; set; }
 
-        [JsonProperty("storyboard")]
-        public bool Storyboard { get; set; }
+        [JsonProperty("mode_int")]
+        public long ModeInt { get; set; }
 
-        [JsonProperty("submitted_date")]
-        public DateTimeOffset SubmittedDate { get; set; }
+        [JsonProperty("replay")]
+        public bool Replay { get; set; }
 
-        [JsonProperty("tags")]
-        public string Tags { get; set; }
+        [JsonProperty("beatmap")]
+        public Beatmap Beatmap { get; set; }
 
-        [JsonProperty("beatmaps")]
-        public List<Beatmap> Beatmaps { get; set; }
-    }
+        [JsonProperty("beatmapset")]
+        public Beatmapset Beatmapset { get; set; }
 
-    public partial class Availability
-    {
-        [JsonProperty("download_disabled")]
-        public bool DownloadDisabled { get; set; }
-
-        [JsonProperty("more_information")]
-        public object MoreInformation { get; set; }
+        [JsonProperty("user")]
+        public User User { get; set; }
     }
 
     public partial class Beatmap
@@ -219,9 +150,60 @@ namespace Maniac.Model.Beatmaps
 
         [JsonProperty("checksum")]
         public string Checksum { get; set; }
+    }
 
-        [JsonProperty("max_combo")]
-        public long? MaxCombo { get; set; }
+    public partial class Beatmapset
+    {
+        [JsonProperty("artist")]
+        public string Artist { get; set; }
+
+        [JsonProperty("artist_unicode")]
+        public string ArtistUnicode { get; set; }
+
+        [JsonProperty("covers")]
+        public Covers Covers { get; set; }
+
+        [JsonProperty("creator")]
+        public string Creator { get; set; }
+
+        [JsonProperty("favourite_count")]
+        public long FavouriteCount { get; set; }
+
+        [JsonProperty("hype")]
+        public object Hype { get; set; }
+
+        [JsonProperty("id")]
+        public long Id { get; set; }
+
+        [JsonProperty("nsfw")]
+        public bool Nsfw { get; set; }
+
+        [JsonProperty("play_count")]
+        public long PlayCount { get; set; }
+
+        [JsonProperty("preview_url")]
+        public string PreviewUrl { get; set; }
+
+        [JsonProperty("source")]
+        public string Source { get; set; }
+
+        [JsonProperty("status")]
+        public Status Status { get; set; }
+
+        [JsonProperty("title")]
+        public string Title { get; set; }
+
+        [JsonProperty("title_unicode")]
+        public string TitleUnicode { get; set; }
+
+        [JsonProperty("track_id")]
+        public object TrackId { get; set; }
+
+        [JsonProperty("user_id")]
+        public long UserId { get; set; }
+
+        [JsonProperty("video")]
+        public bool Video { get; set; }
     }
 
     public partial class Covers
@@ -251,55 +233,72 @@ namespace Maniac.Model.Beatmaps
         public Uri Slimcover2X { get; set; }
     }
 
-    public partial class NominationsSummary
+    public partial class Statistics
     {
-        [JsonProperty("current")]
-        public long Current { get; set; }
+        [JsonProperty("count_50")]
+        public long Count50 { get; set; }
 
-        [JsonProperty("required")]
-        public long NominationsSummaryRequired { get; set; }
+        [JsonProperty("count_100")]
+        public long Count100 { get; set; }
+
+        [JsonProperty("count_300")]
+        public long Count300 { get; set; }
+
+        [JsonProperty("count_geki")]
+        public long CountGeki { get; set; }
+
+        [JsonProperty("count_katu")]
+        public long CountKatu { get; set; }
+
+        [JsonProperty("count_miss")]
+        public long CountMiss { get; set; }
     }
 
-    public partial class Cursor
+    public partial class User
     {
-        [JsonProperty("_score")]
-        public double Score { get; set; }
+        [JsonProperty("avatar_url")]
+        public Uri AvatarUrl { get; set; }
 
-        [JsonProperty("_id")]
-        [JsonConverter(typeof(ParseStringConverter))]
+        [JsonProperty("country_code")]
+        public CountryCode CountryCode { get; set; }
+
+        [JsonProperty("default_group")]
+        public string DefaultGroup { get; set; }
+
+        [JsonProperty("id")]
         public long Id { get; set; }
+
+        [JsonProperty("is_active")]
+        public bool IsActive { get; set; }
+
+        [JsonProperty("is_bot")]
+        public bool IsBot { get; set; }
+
+        [JsonProperty("is_deleted")]
+        public bool IsDeleted { get; set; }
+
+        [JsonProperty("is_online")]
+        public bool IsOnline { get; set; }
+
+        [JsonProperty("is_supporter")]
+        public bool IsSupporter { get; set; }
+
+        [JsonProperty("last_visit")]
+        public DateTimeOffset LastVisit { get; set; }
+
+        [JsonProperty("pm_friends_only")]
+        public bool PmFriendsOnly { get; set; }
+
+        [JsonProperty("profile_colour")]
+        public object ProfileColour { get; set; }
+
+        [JsonProperty("username")]
+        public string Username { get; set; }
     }
 
-    public partial class Search
-    {
-        [JsonProperty("sort")]
-        public string Sort { get; set; }
-    }
+    public enum Rank { X, S, A, B, C, D, F };
 
-    public partial class SearchBeatmap
-    {
-        public static SearchBeatmap FromJson(string json) => JsonConvert.DeserializeObject<SearchBeatmap>(json, Converter.Settings);
-    }
-
-    public static class Serialize
-    {
-        public static string ToJson(this SearchBeatmap self) => JsonConvert.SerializeObject(self, Converter.Settings);
-    }
-
-    internal static class Converter
-    {
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-        {
-            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            DateParseHandling = DateParseHandling.None,
-            Converters =
-            {
-                ModeConverter.Singleton,
-                StatusConverter.Singleton,
-                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
-            },
-        };
-    }
+    public enum CountryCode { Hu };
 
     internal class ModeConverter : JsonConverter
     {
@@ -423,20 +422,32 @@ namespace Maniac.Model.Beatmaps
         public static readonly StatusConverter Singleton = new StatusConverter();
     }
 
-    internal class ParseStringConverter : JsonConverter
+    internal class RankConverter : JsonConverter
     {
-        public override bool CanConvert(Type t) => t == typeof(long) || t == typeof(long?);
+        public override bool CanConvert(Type t) => t == typeof(Rank) || t == typeof(Rank?);
 
         public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null) return null;
             var value = serializer.Deserialize<string>(reader);
-            long l;
-            if (Int64.TryParse(value, out l))
+            switch (value)
             {
-                return l;
+                case "X":
+                    return Rank.X;
+                case "S":
+                    return Rank.S;
+                case "A":
+                    return Rank.A;
+                case "B":
+                    return Rank.B;
+                case "C":
+                    return Rank.C;
+                case "D":
+                    return Rank.D;
+                case "F":
+                    return Rank.F;
             }
-            throw new Exception("Cannot unmarshal type long");
+            throw new Exception("Cannot unmarshal type Rank");
         }
 
         public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
@@ -446,11 +457,90 @@ namespace Maniac.Model.Beatmaps
                 serializer.Serialize(writer, null);
                 return;
             }
-            var value = (long)untypedValue;
-            serializer.Serialize(writer, value.ToString());
-            return;
+            var value = (Rank)untypedValue;
+            switch (value)
+            {
+                case Rank.X:
+                    serializer.Serialize(writer, "X");
+                    return;
+                case Rank.S:
+                    serializer.Serialize(writer, "S");
+                    return;
+                case Rank.A:
+                    serializer.Serialize(writer, "A");
+                    return;
+                case Rank.B:
+                    serializer.Serialize(writer, "B");
+                    return;
+                case Rank.C:
+                    serializer.Serialize(writer, "C");
+                    return;
+                case Rank.D:
+                    serializer.Serialize(writer, "D");
+                    return;
+                case Rank.F:
+                    serializer.Serialize(writer, "F");
+                    return;
+            }
+            throw new Exception("Cannot marshal type Rank");
         }
 
-        public static readonly ParseStringConverter Singleton = new ParseStringConverter();
+        public static readonly RankConverter Singleton = new RankConverter();
+    }
+
+    internal class CountryCodeConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(CountryCode) || t == typeof(CountryCode?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            if (value == "HU")
+            {
+                return CountryCode.Hu;
+            }
+            throw new Exception("Cannot unmarshal type CountryCode");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+            var value = (CountryCode)untypedValue;
+            if (value == CountryCode.Hu)
+            {
+                serializer.Serialize(writer, "HU");
+                return;
+            }
+            throw new Exception("Cannot marshal type CountryCode");
+        }
+
+        public static readonly CountryCodeConverter Singleton = new CountryCodeConverter();
+    }
+
+    public partial class UserScore
+    {
+        public static List<UserScore> FromJson(string json) => JsonConvert.DeserializeObject<List<UserScore>>(json, Converter.Settings);
+    }
+
+    internal static class Converter
+    {
+        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+        {
+            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+            DateParseHandling = DateParseHandling.None,
+            Converters =
+            {
+                ModeConverter.Singleton,
+                StatusConverter.Singleton,
+                RankConverter.Singleton,
+                CountryCodeConverter.Singleton,
+                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
+            },
+        };
     }
 }

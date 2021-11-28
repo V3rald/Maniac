@@ -7,6 +7,7 @@ using Maniac.Model;
 using Maniac.Model.Auth;
 using Maniac.Model.Beatmaps;
 using Maniac.Model.SelectMenu;
+using Maniac.Model.Users;
 using Maniac.Util;
 using Newtonsoft.Json;
 using System;
@@ -15,6 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static Maniac.Common.Constants;
 
 namespace Maniac.Commands
 {
@@ -80,35 +82,38 @@ namespace Maniac.Commands
         {
             if (ulong.TryParse(userId, out ulong id))
             {
-                RecentActivity[] recentActivity = UsersService.GetUserRecentActivity(id);
+                bool isUser = DB.isUser(id);
+                if (!isUser)
+                {
+                    await ctx.Channel.SendMessageAsync("user not found :(").ConfigureAwait(false);
+                    return;
+                }
+
+                UserScore[] recentActivity = UsersService.GetUserScore(Bot.Token.AccessToken, id, "recent");
                 if (recentActivity.Length >= 1)
                 {
-                    //RecentActivity play = recentActivity[0];
+                    UserScore score = recentActivity[0];
+                    Model.Users.Beatmap beatmap = recentActivity[0].Beatmap;
+                    Model.Users.Beatmapset beatmapSet = recentActivity[0].Beatmapset;
 
-                    //Regex rx = new Regex(@"\d+");
-                    //Match match = rx.Match(play.Beatmap.Url);
-
-                    //BeatmapUserScore beatmapUserScore = BeatmapsService.GetBeatmapUserScore(Bot.Token.AccessToken, long.Parse(match.Value), id);
-                    //BeatmapUserScore.ScoreObject score = beatmapUserScore.Score;
-                    //await ctx.Channel.SendMessageAsync("Beatmap: " + play.Beatmap.Title + "\n" +
-                    //    "Accuracy: " + Math.Round(score.Accuracy * 100, 2) + "\n" +
-                    //    "Bpm: " + score.Beatmap.Bpm + "\n" +
-                    //    "SR: " + score.Beatmap.DifficultyRating + "\n" +
-                    //    "HP: " + score.Beatmap.HP + "\n" +
-                    //    "OD: " + score.Beatmap.OD + "\n" +
-                    //    "Status: " + score.Beatmap.Status + "\n" +
-                    //    "Length: " + score.Beatmap.TotalLength + "\n" +
-                    //    "Max Combo: " + score.MaxCombo + "\n" +
-                    //    "Mods: " + string.Join(", ", score.Mods) + "\n" +
-                    //    "PP: " + score.PP + "\n" +
-                    //    "Score: " + score.Score + "\n" +
-                    //    "Miss: " + score.Statistics.CountMiss + "\n" +
-                    //    "50: " + score.Statistics.Count50 + "\n" +
-                    //    "100: " + score.Statistics.Count100 + "\n" +
-                    //    "200: " + score.Statistics.Count200 + "\n" +
-                    //    "300: " + score.Statistics.Count300 + "\n" +
-                    //    "320: " + score.Statistics.Count320
-                    //    ).ConfigureAwait(false);
+                    await ctx.Channel.SendMessageAsync("Beatmap: " + beatmapSet.Title + "\n" +
+                        "Accuracy: " + Math.Round(score.Accuracy * 100, 2) + "\n" +
+                        "Bpm: " + beatmap.Bpm + "\n" +
+                        "SR: " + beatmap.DifficultyRating + "\n" +
+                        "HP: " + beatmap.Drain + "\n" +
+                        "OD: " + beatmap.Accuracy + "\n" +
+                        "Status: " + beatmap.Status + "\n" +
+                        "Length: " + beatmap.TotalLength + "\n" +
+                        "Mods: " + string.Join(", ", score.Mods) + "\n" +
+                        "PP: " + score.Pp + "\n" +
+                        "Score: " + score.Score + "\n" +
+                        "320: " + score.Statistics.CountGeki + "\n" +
+                        "300: " + score.Statistics.Count300 + "\n" +
+                        "200: " + score.Statistics.CountKatu + "\n" +
+                        "100: " + score.Statistics.Count100 + "\n" +
+                        "50: " + score.Statistics.Count50 + "\n" +
+                        "Miss: " + score.Statistics.CountMiss
+                        ).ConfigureAwait(false);
                 }
                 else
                 {
@@ -122,6 +127,54 @@ namespace Maniac.Commands
                 await ctx.Channel.SendMessageAsync("bruh").ConfigureAwait(false);
             }
         }
+
+        //[Command("recent")]
+        //public async Task recent(CommandContext ctx, string userId)
+        //{
+        //    if (ulong.TryParse(userId, out ulong id))
+        //    {
+        //        RecentActivity[] recentActivity = UsersService.GetUserRecentActivity(id);
+        //        if (recentActivity.Length >= 1)
+        //        {
+        //            RecentActivity play = recentActivity[0];
+
+        //            Regex rx = new Regex(@"\d+");
+        //            Match match = rx.Match(play.Beatmap.Url);
+
+        //            BeatmapUserScore beatmapUserScore = BeatmapsService.GetBeatmapUserScore(Bot.Token.AccessToken, long.Parse(match.Value), id);
+        //            BeatmapUserScore.ScoreObject score = beatmapUserScore.Score;
+        //            await ctx.Channel.SendMessageAsync("Beatmap: " + play.Beatmap.Title + "\n" +
+        //                "Accuracy: " + Math.Round(score.Accuracy * 100, 2) + "\n" +
+        //                "Bpm: " + score.Beatmap.Bpm + "\n" +
+        //                "SR: " + score.Beatmap.DifficultyRating + "\n" +
+        //                "HP: " + score.Beatmap.HP + "\n" +
+        //                "OD: " + score.Beatmap.OD + "\n" +
+        //                "Status: " + score.Beatmap.Status + "\n" +
+        //                "Length: " + score.Beatmap.TotalLength + "\n" +
+        //                "Max Combo: " + score.MaxCombo + "\n" +
+        //                "Mods: " + string.Join(", ", score.Mods) + "\n" +
+        //                "PP: " + score.PP + "\n" +
+        //                "Score: " + score.Score + "\n" +
+        //                "Miss: " + score.Statistics.CountMiss + "\n" +
+        //                "50: " + score.Statistics.Count50 + "\n" +
+        //                "100: " + score.Statistics.Count100 + "\n" +
+        //                "200: " + score.Statistics.Count200 + "\n" +
+        //                "300: " + score.Statistics.Count300 + "\n" +
+        //                "320: " + score.Statistics.Count320
+        //                ).ConfigureAwait(false);
+        //        }
+        //        else
+        //        {
+        //            await ctx.Channel.SendMessageAsync("Nincs recentje bruh").ConfigureAwait(false);
+        //        }
+
+        //        Console.WriteLine(ctx.User.Username + $" used command: {ctx.Command.Name} {userId}");
+        //    }
+        //    else
+        //    {
+        //        await ctx.Channel.SendMessageAsync("bruh").ConfigureAwait(false);
+        //    }
+        //}
 
         [Command("search")]
         public async Task search(CommandContext ctx, params string[] args)

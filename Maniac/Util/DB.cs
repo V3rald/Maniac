@@ -38,5 +38,18 @@ namespace Maniac.Util
             }
             return null;
         }
+
+        public static bool isUser(ulong osuUserId)
+        {
+            DBModel db = readDB();
+            foreach (DBModel.User user in db.Users)
+            {
+                if (user.OsuUserId == osuUserId)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

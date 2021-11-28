@@ -8,12 +8,12 @@ namespace Maniac.Model.SelectMenu
     public class BeatmapMenu
     {
         public string Query { get; set; }
-        public List<SearchBeatmap.BeatmapsetObject.BeatmapObject> Beatmaps { get; set; }
+        public Beatmapset Beatmapset { get; set; }
 
-        public BeatmapMenu(string query, List<SearchBeatmap.BeatmapsetObject.BeatmapObject> beatmaps)
+        public BeatmapMenu(string query, Beatmapset beatmapset)
         {
             Query = query;
-            Beatmaps = beatmaps;
+            Beatmapset = beatmapset;
         }
     }
 }

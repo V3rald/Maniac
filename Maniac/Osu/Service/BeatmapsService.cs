@@ -2,10 +2,14 @@
 using Maniac.Model;
 using Maniac.Model.Auth;
 using Maniac.Model.Beatmaps;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -15,15 +19,24 @@ namespace Maniac.Api
     public class BeatmapsService
     {
         private static readonly Beatmaps beatmaps;
+        private static readonly Beatmaps beatmapsMulti;
         static BeatmapsService()
         {
-            //var httpClient = new HttpClient(new HttpClientDiagnosticsHandler(new HttpClientHandler())) { BaseAddress = new Uri(Bot.BaseUrlV2) };
+            var httpClient = new HttpClient(new HttpClientDiagnosticsHandler(new HttpClientHandler())) { BaseAddress = new Uri(Bot.BaseUrlV2) };
+
             beatmaps = RestService.For<Beatmaps>(Bot.BaseUrlV2, new RefitSettings(new NewtonsoftJsonContentSerializer()));
         }
 
-        public static BeatmapUserScore GetBeatmapUserScore(string token, int beatmap, int user)
+        public static BeatmapUserScore GetBeatmapUserScore(string token, long beatmap, ulong user, List<string> mods)
         {
-            return beatmaps.GetBeatmapUserScore(token, beatmap, user).Result;
+            try
+            {
+                return beatmaps.GetBeatmapUserScore(Bot.Token.AccessToken, beatmap, user, mods.ToArray()).Result;
+            }
+            catch (WebException e)
+            {
+                return null;
+            }
         }
 
         public static SearchBeatmap SearchBeatmap(string token, string q, string s)

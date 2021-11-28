@@ -23,6 +23,7 @@ using Maniac.Util;
 using Maniac.Model.SelectMenu;
 using System.Linq;
 using Maniac.Model.BeatmapSetMenu;
+using DSharpPlus.Exceptions;
 
 namespace Maniac
 {
@@ -55,6 +56,8 @@ namespace Maniac
             Client.UseInteractivity(new InteractivityConfiguration()
             {
                 PollBehaviour = PollBehaviour.KeepEmojis,
+                Timeout = TimeSpan.FromSeconds(60),
+                ResponseMessage = "asd"
             });
 
             Client.ComponentInteractionCreated += OnComponentInteractionCreated;
@@ -78,7 +81,14 @@ namespace Maniac
             var userId = SelectMenuUtil.UserId[interactionId];
             if (userId != e.User.Id)
             {
-                await e.Interaction.CreateResponseAsync(InteractionResponseType.DeferredMessageUpdate);
+                try
+                {
+                    await e.Interaction.CreateResponseAsync(InteractionResponseType.DeferredMessageUpdate);
+                }
+                catch (NotFoundException e2)
+                {
+
+                }
                 return;
             }
 
@@ -86,25 +96,35 @@ namespace Maniac
             var json = SelectMenuUtil.Menus[messageId];
 
             var type = e.Values[0].Split(':')[0];
-            int selectId = int.Parse(e.Values[0].Split(':')[1]);
+            List<int> selectId = new List<int>();
+            foreach(var value in e.Values)
+            {
+                selectId.Add(int.Parse(value.Split(':')[1]));
+            }
 
             switch (type)
             {
                 case "status":
-                    SelectMenuUtil.StatusInteraction(e, messageId, JsonConvert.DeserializeObject<StatusMenu>(json), selectId);
+                    SelectMenuUtil.StatusInteraction(e, messageId, JsonConvert.DeserializeObject<StatusMenu>(json), selectId[0]);
                     break;
                 case "beatmapset":
-                    SelectMenuUtil.BeatmapSetInteraction(e, messageId, JsonConvert.DeserializeObject<BeatmapSetMenu>(json), selectId);
+                    SelectMenuUtil.BeatmapSetInteraction(e, messageId, JsonConvert.DeserializeObject<BeatmapSetMenu>(json), selectId[0]);
+                    break;
+                case "mods":
+                    SelectMenuUtil.ModsInteraction(e, messageId, JsonConvert.DeserializeObject<BeatmapMenu>(json), selectId);
                     break;
                 case "beatmap":
-                    BeatmapMenu beatmap = JsonConvert.DeserializeObject<BeatmapMenu>(json);
-
-                    var selectedBuilder = new DiscordMessageBuilder().WithContent("Selected: " + beatmap.Beatmaps[selectId].id);
-                    await e.Message.ModifyAsync(selectedBuilder).ConfigureAwait(false);
+                    SelectMenuUtil.BeatmapInteraction(e, selectId[0], JsonConvert.DeserializeObject<ModsMenu>(json));
                     break;
             }
 
-            await e.Interaction.CreateResponseAsync(InteractionResponseType.DeferredMessageUpdate);
+            try
+            {
+                await e.Interaction.CreateResponseAsync(InteractionResponseType.DeferredMessageUpdate);
+            }catch(NotFoundException e2)
+            {
+
+            }
         }
 
         private static Task onReady(DiscordClient client, ReadyEventArgs e)

@@ -6,15 +6,13 @@ namespace Maniac.Common
 {
     public class Constants
     {
-        public enum Status
+        public enum Mods
         {
-            Ranked,
-            Loved,
-            Graveyard,
-            Pending,
-            Approved,
-            Qualified,
-            Any
+            NM,
+            HD,
+            FL,
+            DT,
+            NC,
         }
     }
 }

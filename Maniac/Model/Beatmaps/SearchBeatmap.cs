@@ -1,128 +1,459 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Maniac.Model.Beatmaps
 {
-    public class SearchBeatmap
+    public partial class SearchBeatmap
     {
-        public List<BeatmapsetObject> beatmapsets { get; set; }
-        public CursorObject cursor { get; set; }
-        public SearchObject search { get; set; }
-        public object recommended_difficulty { get; set; }
-        public object error { get; set; }
-        public int total { get; set; }
+        [JsonProperty("beatmapsets")]
+        public List<Beatmapset> Beatmapsets { get; set; }
 
-        public class BeatmapsetObject
+        [JsonProperty("cursor")]
+        public Cursor Cursor { get; set; }
+
+        [JsonProperty("search")]
+        public Search Search { get; set; }
+
+        [JsonProperty("recommended_difficulty")]
+        public object RecommendedDifficulty { get; set; }
+
+        [JsonProperty("error")]
+        public object Error { get; set; }
+
+        [JsonProperty("total")]
+        public long Total { get; set; }
+    }
+
+    public partial class Beatmapset
+    {
+        [JsonProperty("artist")]
+        public string Artist { get; set; }
+
+        [JsonProperty("artist_unicode")]
+        public string ArtistUnicode { get; set; }
+
+        [JsonProperty("covers")]
+        public Covers Covers { get; set; }
+
+        [JsonProperty("creator")]
+        public string Creator { get; set; }
+
+        [JsonProperty("favourite_count")]
+        public long FavouriteCount { get; set; }
+
+        [JsonProperty("hype")]
+        public NominationsSummary Hype { get; set; }
+
+        [JsonProperty("id")]
+        public long Id { get; set; }
+
+        [JsonProperty("nsfw")]
+        public bool Nsfw { get; set; }
+
+        [JsonProperty("play_count")]
+        public long PlayCount { get; set; }
+
+        [JsonProperty("preview_url")]
+        public string PreviewUrl { get; set; }
+
+        [JsonProperty("source")]
+        public string Source { get; set; }
+
+        [JsonProperty("status")]
+        public Status Status { get; set; }
+
+        [JsonProperty("title")]
+        public string Title { get; set; }
+
+        [JsonProperty("title_unicode")]
+        public string TitleUnicode { get; set; }
+
+        [JsonProperty("track_id")]
+        public long? TrackId { get; set; }
+
+        [JsonProperty("user_id")]
+        public long UserId { get; set; }
+
+        [JsonProperty("video")]
+        public bool Video { get; set; }
+
+        [JsonProperty("availability")]
+        public Availability Availability { get; set; }
+
+        [JsonProperty("bpm")]
+        public double Bpm { get; set; }
+
+        [JsonProperty("can_be_hyped")]
+        public bool CanBeHyped { get; set; }
+
+        [JsonProperty("discussion_enabled")]
+        public bool DiscussionEnabled { get; set; }
+
+        [JsonProperty("discussion_locked")]
+        public bool DiscussionLocked { get; set; }
+
+        [JsonProperty("is_scoreable")]
+        public bool IsScoreable { get; set; }
+
+        [JsonProperty("last_updated")]
+        public DateTimeOffset LastUpdated { get; set; }
+
+        [JsonProperty("legacy_thread_url")]
+        public Uri LegacyThreadUrl { get; set; }
+
+        [JsonProperty("nominations_summary")]
+        public NominationsSummary NominationsSummary { get; set; }
+
+        [JsonProperty("ranked")]
+        public long Ranked { get; set; }
+
+        [JsonProperty("ranked_date")]
+        public DateTimeOffset? RankedDate { get; set; }
+
+        [JsonProperty("storyboard")]
+        public bool Storyboard { get; set; }
+
+        [JsonProperty("submitted_date")]
+        public DateTimeOffset SubmittedDate { get; set; }
+
+        [JsonProperty("tags")]
+        public string Tags { get; set; }
+
+        [JsonProperty("beatmaps")]
+        public List<Beatmap> Beatmaps { get; set; }
+    }
+
+    public partial class Availability
+    {
+        [JsonProperty("download_disabled")]
+        public bool DownloadDisabled { get; set; }
+
+        [JsonProperty("more_information")]
+        public object MoreInformation { get; set; }
+    }
+
+    public partial class Beatmap
+    {
+        [JsonProperty("beatmapset_id")]
+        public long BeatmapsetId { get; set; }
+
+        [JsonProperty("difficulty_rating")]
+        public double DifficultyRating { get; set; }
+
+        [JsonProperty("id")]
+        public long Id { get; set; }
+
+        [JsonProperty("mode")]
+        public Mode Mode { get; set; }
+
+        [JsonProperty("status")]
+        public Status Status { get; set; }
+
+        [JsonProperty("total_length")]
+        public long TotalLength { get; set; }
+
+        [JsonProperty("user_id")]
+        public long UserId { get; set; }
+
+        [JsonProperty("version")]
+        public string Version { get; set; }
+
+        [JsonProperty("accuracy")]
+        public double Accuracy { get; set; }
+
+        [JsonProperty("ar")]
+        public double Ar { get; set; }
+
+        [JsonProperty("bpm")]
+        public double Bpm { get; set; }
+
+        [JsonProperty("convert")]
+        public bool Convert { get; set; }
+
+        [JsonProperty("count_circles")]
+        public long CountCircles { get; set; }
+
+        [JsonProperty("count_sliders")]
+        public long CountSliders { get; set; }
+
+        [JsonProperty("count_spinners")]
+        public long CountSpinners { get; set; }
+
+        [JsonProperty("cs")]
+        public double Cs { get; set; }
+
+        [JsonProperty("deleted_at")]
+        public object DeletedAt { get; set; }
+
+        [JsonProperty("drain")]
+        public double Drain { get; set; }
+
+        [JsonProperty("hit_length")]
+        public long HitLength { get; set; }
+
+        [JsonProperty("is_scoreable")]
+        public bool IsScoreable { get; set; }
+
+        [JsonProperty("last_updated")]
+        public DateTimeOffset LastUpdated { get; set; }
+
+        [JsonProperty("mode_int")]
+        public long ModeInt { get; set; }
+
+        [JsonProperty("passcount")]
+        public long Passcount { get; set; }
+
+        [JsonProperty("playcount")]
+        public long Playcount { get; set; }
+
+        [JsonProperty("ranked")]
+        public long Ranked { get; set; }
+
+        [JsonProperty("url")]
+        public Uri Url { get; set; }
+
+        [JsonProperty("checksum")]
+        public string Checksum { get; set; }
+
+        [JsonProperty("max_combo")]
+        public long? MaxCombo { get; set; }
+    }
+
+    public partial class Covers
+    {
+        [JsonProperty("cover")]
+        public Uri Cover { get; set; }
+
+        [JsonProperty("cover@2x")]
+        public Uri Cover2X { get; set; }
+
+        [JsonProperty("card")]
+        public Uri Card { get; set; }
+
+        [JsonProperty("card@2x")]
+        public Uri Card2X { get; set; }
+
+        [JsonProperty("list")]
+        public Uri List { get; set; }
+
+        [JsonProperty("list@2x")]
+        public Uri List2X { get; set; }
+
+        [JsonProperty("slimcover")]
+        public Uri Slimcover { get; set; }
+
+        [JsonProperty("slimcover@2x")]
+        public Uri Slimcover2X { get; set; }
+    }
+
+    public partial class NominationsSummary
+    {
+        [JsonProperty("current")]
+        public long Current { get; set; }
+
+        [JsonProperty("required")]
+        public long NominationsSummaryRequired { get; set; }
+    }
+
+    public partial class Cursor
+    {
+        [JsonProperty("_score")]
+        public double Score { get; set; }
+
+        [JsonProperty("_id")]
+        [JsonConverter(typeof(ParseStringConverter))]
+        public long Id { get; set; }
+    }
+
+    public partial class Search
+    {
+        [JsonProperty("sort")]
+        public string Sort { get; set; }
+    }
+
+    public enum Mode { Fruits, Mania, Osu, Taiko };
+
+    public enum Status { Ranked, Loved, Graveyard, Pending, Approved, Qualified, Wip, Any };
+
+    public partial class SearchBeatmap
+    {
+        public static SearchBeatmap FromJson(string json) => JsonConvert.DeserializeObject<SearchBeatmap>(json, Converter.Settings);
+    }
+
+    public static class Serialize
+    {
+        public static string ToJson(this SearchBeatmap self) => JsonConvert.SerializeObject(self, Converter.Settings);
+    }
+
+    internal static class Converter
+    {
+        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
         {
-            public string artist { get; set; }
-            public string artist_unicode { get; set; }
-            public CoversObject covers { get; set; }
-            public string creator { get; set; }
-            public int favourite_count { get; set; }
-            public object hype { get; set; }
-            public int id { get; set; }
-            public bool nsfw { get; set; }
-            public int play_count { get; set; }
-            public string preview_url { get; set; }
-            public string source { get; set; }
-            public string status { get; set; }
-            public string title { get; set; }
-            public string title_unicode { get; set; }
-            public int? track_id { get; set; }
-            public int user_id { get; set; }
-            public bool video { get; set; }
-            public AvailabilityObject availability { get; set; }
-            public double bpm { get; set; }
-            public bool can_be_hyped { get; set; }
-            public bool discussion_enabled { get; set; }
-            public bool discussion_locked { get; set; }
-            public bool is_scoreable { get; set; }
-            public DateTime? last_updated { get; set; }
-            public string legacy_thread_url { get; set; }
-            public NominationsSummaryObject nominations_summary { get; set; }
-            public int ranked { get; set; }
-            public DateTime? ranked_date { get; set; }
-            public bool storyboard { get; set; }
-            public DateTime? submitted_date { get; set; }
-            public string tags { get; set; }
-            public List<BeatmapObject> beatmaps { get; set; }
-
-            public class CoversObject
+            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+            DateParseHandling = DateParseHandling.None,
+            Converters =
             {
-                public string cover { get; set; }
+                ModeConverter.Singleton,
+                StatusConverter.Singleton,
+                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
+            },
+        };
+    }
 
-                [JsonProperty("cover@2x")]
-                public string Cover2x { get; set; }
-                public string card { get; set; }
+    internal class ModeConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(Mode) || t == typeof(Mode?);
 
-                [JsonProperty("card@2x")]
-                public string Card2x { get; set; }
-                public string list { get; set; }
-
-                [JsonProperty("list@2x")]
-                public string List2x { get; set; }
-                public string slimcover { get; set; }
-
-                [JsonProperty("slimcover@2x")]
-                public string Slimcover2x { get; set; }
-            }
-
-            public class AvailabilityObject
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            switch (value)
             {
-                public bool download_disabled { get; set; }
-                public string more_information { get; set; }
+                case "fruits":
+                    return Mode.Fruits;
+                case "mania":
+                    return Mode.Mania;
+                case "osu":
+                    return Mode.Osu;
+                case "taiko":
+                    return Mode.Taiko;
             }
-
-            public class NominationsSummaryObject
-            {
-                public int current { get; set; }
-                public int required { get; set; }
-            }
-
-            public class BeatmapObject
-            {
-                public int beatmapset_id { get; set; }
-                public double difficulty_rating { get; set; }
-                public int id { get; set; }
-                public string mode { get; set; }
-                public string status { get; set; }
-                public int total_length { get; set; }
-                public int user_id { get; set; }
-                public string version { get; set; }
-                public double accuracy { get; set; }
-                public double ar { get; set; }
-                public double bpm { get; set; }
-                public bool convert { get; set; }
-                public int count_circles { get; set; }
-                public int count_sliders { get; set; }
-                public int count_spinners { get; set; }
-                public double cs { get; set; }
-                public object deleted_at { get; set; }
-                public double drain { get; set; }
-                public int hit_length { get; set; }
-                public bool is_scoreable { get; set; }
-                public DateTime last_updated { get; set; }
-                public int mode_int { get; set; }
-                public int passcount { get; set; }
-                public int playcount { get; set; }
-                public int ranked { get; set; }
-                public string url { get; set; }
-                public string checksum { get; set; }
-                public int? MaxCombo { get; set; }
-            }
+            throw new Exception("Cannot unmarshal type Mode");
         }
 
-        public class SearchObject
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
         {
-            public string sort { get; set; }
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+            var value = (Mode)untypedValue;
+            switch (value)
+            {
+                case Mode.Fruits:
+                    serializer.Serialize(writer, "fruits");
+                    return;
+                case Mode.Mania:
+                    serializer.Serialize(writer, "mania");
+                    return;
+                case Mode.Osu:
+                    serializer.Serialize(writer, "osu");
+                    return;
+                case Mode.Taiko:
+                    serializer.Serialize(writer, "taiko");
+                    return;
+            }
+            throw new Exception("Cannot marshal type Mode");
         }
 
-        public class CursorObject
+        public static readonly ModeConverter Singleton = new ModeConverter();
+    }
+
+    internal class StatusConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(Status) || t == typeof(Status?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
         {
-            public double _score { get; set; }
-            public string _id { get; set; }
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            switch (value)
+            {
+                case "ranked":
+                    return Status.Ranked;
+                case "loved":
+                    return Status.Loved;
+                case "graveyard":
+                    return Status.Graveyard;
+                case "pending":
+                    return Status.Pending;
+                case "approved":
+                    return Status.Approved;
+                case "qualified":
+                    return Status.Qualified;
+                case "wip":
+                    return Status.Wip;
+                case "any":
+                    return Status.Any;
+            }
+            throw new Exception("Cannot unmarshal type Status");
         }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+            var value = (Status)untypedValue;
+            switch (value)
+            {
+                case Status.Ranked:
+                    serializer.Serialize(writer, "ranked");
+                    return;
+                case Status.Loved:
+                    serializer.Serialize(writer, "loved");
+                    return;
+                case Status.Graveyard:
+                    serializer.Serialize(writer, "graveyard");
+                    return;
+                case Status.Pending:
+                    serializer.Serialize(writer, "pending");
+                    return;
+                case Status.Approved:
+                    serializer.Serialize(writer, "approved");
+                    return;
+                case Status.Qualified:
+                    serializer.Serialize(writer, "qualified");
+                    return;
+                case Status.Wip:
+                    serializer.Serialize(writer, "wip");
+                    return;
+                case Status.Any:
+                    serializer.Serialize(writer, "any");
+                    return;
+            }
+            throw new Exception("Cannot marshal type Status");
+        }
+
+        public static readonly StatusConverter Singleton = new StatusConverter();
+    }
+
+    internal class ParseStringConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(long) || t == typeof(long?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            long l;
+            if (Int64.TryParse(value, out l))
+            {
+                return l;
+            }
+            throw new Exception("Cannot unmarshal type long");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+            var value = (long)untypedValue;
+            serializer.Serialize(writer, value.ToString());
+            return;
+        }
+
+        public static readonly ParseStringConverter Singleton = new ParseStringConverter();
     }
 }

@@ -8,9 +8,9 @@ namespace Maniac.Model.BeatmapSetMenu
     public class BeatmapSetMenu
     {
         public string Query { get; set; }
-        public List<SearchBeatmap.BeatmapsetObject> BeatmapSets { get; set; }
+        public List<Beatmapset> BeatmapSets { get; set; }
 
-        public BeatmapSetMenu(string query, List<SearchBeatmap.BeatmapsetObject> beatmapSets)
+        public BeatmapSetMenu(string query, List<Beatmapset> beatmapSets)
         {
             Query = query;
             BeatmapSets = beatmapSets;

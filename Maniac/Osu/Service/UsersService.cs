@@ -19,7 +19,7 @@ namespace Maniac.Api
             users = RestService.For<Users>(Bot.BaseUrl, new RefitSettings(new NewtonsoftJsonContentSerializer()));
         }
 
-        public static RecentActivity[] GetUserRecentActivity(int user, int limit = 1, int offset = 0)
+        public static RecentActivity[] GetUserRecentActivity(ulong user, int limit = 1, int offset = 0)
         {
             return users.GetUserRecentActivity(user, limit, offset).Result;
         }

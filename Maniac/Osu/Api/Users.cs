@@ -10,6 +10,6 @@ namespace Maniac.Api.Api
     public interface Users
     {
         [Get("/users/{user}/recent_activity?limit=limit&offset=offset")]
-        Task<RecentActivity[]> GetUserRecentActivity(int user, int limit = 1, int offset = 0);
+        Task<RecentActivity[]> GetUserRecentActivity(ulong user, int limit = 1, int offset = 0);
     }
 }

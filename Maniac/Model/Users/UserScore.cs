@@ -254,48 +254,6 @@ namespace Maniac.Model.Users
         public long CountMiss { get; set; }
     }
 
-    public partial class User
-    {
-        [JsonProperty("avatar_url")]
-        public Uri AvatarUrl { get; set; }
-
-        [JsonProperty("country_code")]
-        public CountryCode CountryCode { get; set; }
-
-        [JsonProperty("default_group")]
-        public string DefaultGroup { get; set; }
-
-        [JsonProperty("id")]
-        public long Id { get; set; }
-
-        [JsonProperty("is_active")]
-        public bool IsActive { get; set; }
-
-        [JsonProperty("is_bot")]
-        public bool IsBot { get; set; }
-
-        [JsonProperty("is_deleted")]
-        public bool IsDeleted { get; set; }
-
-        [JsonProperty("is_online")]
-        public bool IsOnline { get; set; }
-
-        [JsonProperty("is_supporter")]
-        public bool IsSupporter { get; set; }
-
-        [JsonProperty("last_visit")]
-        public DateTimeOffset LastVisit { get; set; }
-
-        [JsonProperty("pm_friends_only")]
-        public bool PmFriendsOnly { get; set; }
-
-        [JsonProperty("profile_colour")]
-        public object ProfileColour { get; set; }
-
-        [JsonProperty("username")]
-        public string Username { get; set; }
-    }
-
     public enum Rank { X, S, A, B, C, D, F };
 
     public enum CountryCode { Hu };

@@ -4,7 +4,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Maniac.Model.Beatmaps
+namespace Maniac.Model.Users
 {
     public partial class User
     {

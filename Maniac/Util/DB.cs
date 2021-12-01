@@ -18,6 +18,7 @@ namespace Maniac.Util
         }
         public static void addUser(ulong discordUserId, ulong osuUserId)
         {
+            // TODO: Save user object instead of id
             DBModel db = readDB();
 
             db.Users.Add(new DBModel.User(discordUserId, osuUserId));

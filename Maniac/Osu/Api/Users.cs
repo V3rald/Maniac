@@ -10,6 +10,9 @@ namespace Maniac.Api.Api
 {
     public interface Users
     {
+        [Get("/users/{user}/{mode}")]
+        Task<Model.Beatmaps.User> GetUser([Authorize("Bearer")] string token, ulong user, string mode = "mania");
+
         [Get("/users/{user}/recent_activity?limit=limit&offset=offset")]
         Task<RecentActivity[]> GetUserRecentActivity(ulong user, int limit = 1, int offset = 0);
 

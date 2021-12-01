@@ -17,10 +17,14 @@ namespace Maniac.Api
         private static readonly Users users;
         static UsersService()
         {
-            //var httpClient = new HttpClient(new HttpClientDiagnosticsHandler(new HttpClientHandler())) { BaseAddress = new Uri(Bot.BaseUrlV2) };
-            users = RestService.For<Users>(Bot.BaseUrlV2, new RefitSettings(new NewtonsoftJsonContentSerializer()));
+            var httpClient = new HttpClient(new HttpClientDiagnosticsHandler(new HttpClientHandler())) { BaseAddress = new Uri(Bot.BaseUrlV2) };
+            users = RestService.For<Users>(httpClient, new RefitSettings(new NewtonsoftJsonContentSerializer()));
         }
 
+        public static Model.Beatmaps.User GetUser(string token, ulong user, string mode = "mania")
+        {
+            return users.GetUser(token, user, mode).Result;
+        }
         public static RecentActivity[] GetUserRecentActivity(ulong user, int limit = 1, int offset = 0)
         {
             return users.GetUserRecentActivity(user, limit, offset).Result;

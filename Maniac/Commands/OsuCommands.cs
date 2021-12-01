@@ -28,7 +28,7 @@ namespace Maniac.Commands
             if (ulong.TryParse(id, out ulong osuUserId))
             {
                 ulong discordUserId = ctx.User.Id;
-                if(DB.getUser(discordUserId) != null)
+                if(DB.getUser(discordUserId) == null)
                 {
                     DB.addUser(discordUserId, osuUserId);
                     await ctx.Channel.SendMessageAsync("Linked!").ConfigureAwait(false);
@@ -128,53 +128,74 @@ namespace Maniac.Commands
             }
         }
 
-        //[Command("recent")]
-        //public async Task recent(CommandContext ctx, string userId)
-        //{
-        //    if (ulong.TryParse(userId, out ulong id))
-        //    {
-        //        RecentActivity[] recentActivity = UsersService.GetUserRecentActivity(id);
-        //        if (recentActivity.Length >= 1)
-        //        {
-        //            RecentActivity play = recentActivity[0];
 
-        //            Regex rx = new Regex(@"\d+");
-        //            Match match = rx.Match(play.Beatmap.Url);
+        [Command("recentembed")]
+        public async Task recentembed(CommandContext ctx, string userId)
+        {
+            try
+            {
+                if (ulong.TryParse(userId, out ulong id))
+                {
+                    //bool isUser = DB.isUser(id);
+                    //if (!isUser)
+                    //{
+                    //    await ctx.Channel.SendMessageAsync("user not found :(").ConfigureAwait(false);
+                    //    return;
+                    //}
 
-        //            BeatmapUserScore beatmapUserScore = BeatmapsService.GetBeatmapUserScore(Bot.Token.AccessToken, long.Parse(match.Value), id);
-        //            BeatmapUserScore.ScoreObject score = beatmapUserScore.Score;
-        //            await ctx.Channel.SendMessageAsync("Beatmap: " + play.Beatmap.Title + "\n" +
-        //                "Accuracy: " + Math.Round(score.Accuracy * 100, 2) + "\n" +
-        //                "Bpm: " + score.Beatmap.Bpm + "\n" +
-        //                "SR: " + score.Beatmap.DifficultyRating + "\n" +
-        //                "HP: " + score.Beatmap.HP + "\n" +
-        //                "OD: " + score.Beatmap.OD + "\n" +
-        //                "Status: " + score.Beatmap.Status + "\n" +
-        //                "Length: " + score.Beatmap.TotalLength + "\n" +
-        //                "Max Combo: " + score.MaxCombo + "\n" +
-        //                "Mods: " + string.Join(", ", score.Mods) + "\n" +
-        //                "PP: " + score.PP + "\n" +
-        //                "Score: " + score.Score + "\n" +
-        //                "Miss: " + score.Statistics.CountMiss + "\n" +
-        //                "50: " + score.Statistics.Count50 + "\n" +
-        //                "100: " + score.Statistics.Count100 + "\n" +
-        //                "200: " + score.Statistics.Count200 + "\n" +
-        //                "300: " + score.Statistics.Count300 + "\n" +
-        //                "320: " + score.Statistics.Count320
-        //                ).ConfigureAwait(false);
-        //        }
-        //        else
-        //        {
-        //            await ctx.Channel.SendMessageAsync("Nincs recentje bruh").ConfigureAwait(false);
-        //        }
+                    UserScore[] recentActivity = UsersService.GetUserScore(Bot.Token.AccessToken, id, "recent");
+                    if (recentActivity.Length >= 1)
+                    {
+                        Model.Beatmaps.User user = UsersService.GetUser(Bot.Token.AccessToken, id, "mania");
+                        UserScore score = recentActivity[0];
+                        Model.Users.Beatmap beatmap = recentActivity[0].Beatmap;
+                        Model.Users.Beatmapset beatmapSet = recentActivity[0].Beatmapset;
 
-        //        Console.WriteLine(ctx.User.Username + $" used command: {ctx.Command.Name} {userId}");
-        //    }
-        //    else
-        //    {
-        //        await ctx.Channel.SendMessageAsync("bruh").ConfigureAwait(false);
-        //    }
-        //}
+                        DiscordEmbedBuilder embedBuilder = new DiscordEmbedBuilder();
+                        embedBuilder.WithAuthor(String.Format("{0}: {1}pp | #{2} | {3} #{4} | [{5}]", user.Username, user.Statistics.Pp, user.Statistics.GlobalRank, user.CountryCode, user.Statistics.CountryRank, score.Mode));
+
+                        embedBuilder.WithThumbnail(beatmapSet.Covers.List2X);
+
+                        embedBuilder.WithTitle(String.Format("{0} - {1} [{2}] ({3})", beatmapSet.Artist, beatmapSet.Title, beatmap.Version, beatmapSet.Creator));
+                        embedBuilder.WithUrl("https://www.google.com/");
+
+                        embedBuilder.AddField(String.Format("Score: {0} {1} | Acc: {2}% {3}",score.Score, (string.Join("", score.Mods).Length > 0 ? ("+" + string.Join("", score.Mods)) : ""), Math.Round(score.Accuracy * 100, 2), score.Rank),
+                                                            String.Format("Combo: {0}x [{1}/{2}/{3}/{4}/{5}/{6}]\n", score.MaxCombo,
+                                                                          score.Statistics.CountGeki, score.Statistics.Count300, score.Statistics.CountKatu, score.Statistics.Count100, score.Statistics.Count50, score.Statistics.CountMiss, false));
+                        
+                        embedBuilder.AddField(String.Format("BPM: {0} | OD: {1} | SR: {2}", beatmap.Bpm, beatmap.Accuracy, beatmap.DifficultyRating),
+                                                             String.Format("Length: {0} | Drain: {1} | HP:{2}", beatmap.TotalLength, beatmap.HitLength, beatmap.Drain), false);
+
+                        embedBuilder.AddField(String.Format("pp: {0} / {1}", (score.Pp > 0 ? score.Pp.ToString() : "0"), "maxpp"), "_ _", false);
+
+
+                        //if exists
+                        //embedBuilder.WithFooter(String.Format("#{0} top play", "69"));
+
+                        embedBuilder.WithTimestamp(score.CreatedAt);
+
+                        DiscordEmbed recentEmbed = embedBuilder.Build();
+                        await ctx.Channel.SendMessageAsync(recentEmbed);
+                    }
+                    else
+                    {
+                        await ctx.Channel.SendMessageAsync("Nincs recentje bruh").ConfigureAwait(false);
+                    }
+
+                    Console.WriteLine(ctx.User.Username + $" used command: {ctx.Command.Name} {userId}");
+                }
+                else
+                {
+                    await ctx.Channel.SendMessageAsync("bruh").ConfigureAwait(false);
+                }
+            }
+            catch (Exception e)
+            {
+
+                await ctx.Channel.SendMessageAsync(e.Message);
+            }
+
+        }
 
         [Command("search")]
         public async Task search(CommandContext ctx, params string[] args)

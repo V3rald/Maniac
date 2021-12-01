@@ -19,4 +19,8 @@
     <None Include="bin\Debug\netcoreapp3.1\config.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Model\NewFolder\" />
+  </ItemGroup>
+
 </Project>

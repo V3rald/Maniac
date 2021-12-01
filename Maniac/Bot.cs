@@ -49,6 +49,7 @@ namespace Maniac
             {
                 Token = Config.token,
                 TokenType = TokenType.Bot,
+                MinimumLogLevel = LogLevel.Debug,
             });
 
             Client.Ready += onReady;

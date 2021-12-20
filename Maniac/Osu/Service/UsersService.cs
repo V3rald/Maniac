@@ -21,18 +21,18 @@ namespace Maniac.Api
             users = RestService.For<Users>(httpClient, new RefitSettings(new NewtonsoftJsonContentSerializer()));
         }
 
-        public static Model.Beatmaps.User GetUser(string token, ulong user, string mode = "mania")
+        public static User GetUser(string token, string userNameOrId, string mode = "mania")
         {
-            return users.GetUser(token, user, mode).Result;
+            return users.GetUser(token, userNameOrId, mode).Result;
         }
         public static RecentActivity[] GetUserRecentActivity(ulong user, int limit = 1, int offset = 0)
         {
             return users.GetUserRecentActivity(user, limit, offset).Result;
         }
 
-        public static UserScore[] GetUserScore(string token, ulong user, string type)
+        public static UserScore[] GetUserScore(string token, ulong userId, string type)
         {
-            return users.GetUserScore(token, user, type).Result;
+            return users.GetUserScore(token, userId, type).Result;
         }
     }
 }

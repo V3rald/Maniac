@@ -32,6 +32,8 @@ namespace Maniac.Model.Auth
             public float? PP { get; set; }
             [JsonProperty("beatmap")]
             public BeatmapObject Beatmap { get; set; }
+            [JsonProperty("created_at")]
+            public DateTime CreatedAt { get; set; }
 
             public class StatisticsObject
             {

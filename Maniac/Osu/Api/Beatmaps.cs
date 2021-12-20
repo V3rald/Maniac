@@ -16,5 +16,8 @@ namespace Maniac.Api.Api
 
         [Get("/beatmapsets/search")]
         Task<SearchBeatmap> SearchBeatmap([Authorize("Bearer")] string token, string q, string s);
+
+        [Get("/beatmaps/{beatmap}")]
+        Task<GetBeatmap> GetBeatmap([Authorize("Bearer")] string token, long beatmap);
     }
 }

@@ -72,13 +72,16 @@ namespace Maniac.Util
 
             if (userId.HasValue)
             {
-                BeatmapUserScore score = BeatmapsService.GetBeatmapUserScore(Bot.Token.AccessToken, beatmap.Id, userId.Value, modsMenu.Mods);
+                BeatmapUserScore score = BeatmapsService .GetBeatmapUserScore(Bot.Token.AccessToken, beatmap.Id, userId.Value, modsMenu.Mods);
                 if (score == null)
                 {
                     builder.WithContent("No score bruh");
                     await e.Message.ModifyAsync(builder).ConfigureAwait(false);
                     return;
                 }
+
+                string mods = string.Join(", ", score.Score.Mods);
+                if (string.IsNullOrEmpty(mods)) mods = "NM";
 
                 var embedBuilder = new DiscordEmbedBuilder();
                 embedBuilder.WithTitle(modsMenu.Beatmapset.Title + " - " + beatmap.Version);
@@ -94,7 +97,7 @@ namespace Maniac.Util
 
                 embedBuilder.AddField("Bpm", score.Score.Beatmap.Bpm.ToString(), true);
                 embedBuilder.AddField("Length", score.Score.Beatmap.TotalLength.ToString(), true);
-                embedBuilder.AddField("Mods", string.Join(", ", score.Score.Mods), true);
+                embedBuilder.AddField("Mods", mods, true);
 
                 embedBuilder.AddField("320", score.Score.Statistics.Count320.ToString(), true);
                 embedBuilder.AddField("300", score.Score.Statistics.Count300.ToString(), true);

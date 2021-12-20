@@ -16,12 +16,13 @@ namespace Maniac.Util
             }
             return new DBModel();
         }
+
         public static void addUser(ulong discordUserId, ulong osuUserId)
         {
             // TODO: Save user object instead of id
             DBModel db = readDB();
 
-            db.Users.Add(new DBModel.User(discordUserId, osuUserId));
+            db.Users.Add(new UserConnection(discordUserId, osuUserId));
 
             string json = JsonConvert.SerializeObject(db);
             File.WriteAllText("db.json", json);
@@ -30,7 +31,7 @@ namespace Maniac.Util
         public static ulong? getUser(ulong discordUserId)
         {
             DBModel db = readDB();
-            foreach(DBModel.User user in db.Users)
+            foreach(UserConnection user in db.Users)
             {
                 if(user.DiscorduserID == discordUserId)
                 {
@@ -43,7 +44,7 @@ namespace Maniac.Util
         public static bool isUser(ulong osuUserId)
         {
             DBModel db = readDB();
-            foreach (DBModel.User user in db.Users)
+            foreach (UserConnection user in db.Users)
             {
                 if (user.OsuUserId == osuUserId)
                 {
@@ -51,6 +52,21 @@ namespace Maniac.Util
                 }
             }
             return false;
+        }
+
+        public static LastBeatmap getLastBeatmap()
+        {
+            DBModel db = readDB();
+            return db.LastBeatmap;
+        }
+
+        public static void setLastBeatmap(LastBeatmap beatmap)
+        {
+            DBModel db = readDB();
+            db.LastBeatmap = beatmap;
+
+            string json = JsonConvert.SerializeObject(db);
+            File.WriteAllText("db.json", json);
         }
     }
 }

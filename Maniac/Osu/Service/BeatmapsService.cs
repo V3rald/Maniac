@@ -24,7 +24,7 @@ namespace Maniac.Api
         {
             var httpClient = new HttpClient(new HttpClientDiagnosticsHandler(new HttpClientHandler())) { BaseAddress = new Uri(Bot.BaseUrlV2) };
 
-            beatmaps = RestService.For<Beatmaps>(Bot.BaseUrlV2, new RefitSettings(new NewtonsoftJsonContentSerializer()));
+            beatmaps = RestService.For<Beatmaps>(httpClient, new RefitSettings(new NewtonsoftJsonContentSerializer()));
         }
 
         public static BeatmapUserScore GetBeatmapUserScore(string token, long beatmap, ulong user, List<string> mods)
@@ -42,6 +42,11 @@ namespace Maniac.Api
         public static SearchBeatmap SearchBeatmap(string token, string q, string s)
         {
             return beatmaps.SearchBeatmap(token, q, s).Result;
+        }
+
+        public static GetBeatmap GetBeatmap(string token, long beatmapId)
+        {
+            return beatmaps.GetBeatmap(token, beatmapId).Result;
         }
     }
 }

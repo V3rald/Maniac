@@ -13,7 +13,8 @@ namespace Maniac.Commands
         [Command("ping")]
         public async Task ping(CommandContext ctx)
         {
-            await ctx.Channel.SendMessageAsync(ctx.Client.Ping + " ms").ConfigureAwait(false);
+            //await ctx.Channel.SendMessageAsync(ctx.Client.Ping + " ms").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync("pong!").ConfigureAwait(false);
 
             Console.WriteLine(ctx.User.Username + $" used command: {ctx.Command.Name}");
         }

@@ -4,7 +4,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Maniac.Model.Users
+namespace Maniac.Model
 {
     public partial class User
     {
@@ -18,7 +18,7 @@ namespace Maniac.Model.Users
         public string DefaultGroup { get; set; }
 
         [JsonProperty("id")]
-        public long Id { get; set; }
+        public ulong Id { get; set; }
 
         [JsonProperty("is_active")]
         public bool IsActive { get; set; }
@@ -36,7 +36,7 @@ namespace Maniac.Model.Users
         public bool IsSupporter { get; set; }
 
         [JsonProperty("last_visit")]
-        public DateTimeOffset LastVisit { get; set; }
+        public DateTimeOffset? LastVisit { get; set; }
 
         [JsonProperty("pm_friends_only")]
         public bool PmFriendsOnly { get; set; }
@@ -51,13 +51,13 @@ namespace Maniac.Model.Users
         public Uri CoverUrl { get; set; }
 
         [JsonProperty("discord")]
-        public object Discord { get; set; }
+        public string Discord { get; set; }
 
         [JsonProperty("has_supported")]
         public bool HasSupported { get; set; }
 
         [JsonProperty("interests")]
-        public object Interests { get; set; }
+        public string Interests { get; set; }
 
         [JsonProperty("join_date")]
         public DateTimeOffset JoinDate { get; set; }
@@ -291,7 +291,7 @@ namespace Maniac.Model.Users
         public long CountryRank { get; set; }
 
         [JsonProperty("rank")]
-        public Rank Rank { get; set; }
+        public Ranks Rank { get; set; }
 
         [JsonProperty("variants")]
         public List<Variant> Variants { get; set; }
@@ -324,7 +324,7 @@ namespace Maniac.Model.Users
         public long Progress { get; set; }
     }
 
-    public partial class Rank
+    public partial class Ranks
     {
         [JsonProperty("country")]
         public long Country { get; set; }
@@ -357,7 +357,7 @@ namespace Maniac.Model.Users
         public long AchievementId { get; set; }
     }
 
-    public partial class User
+    public partial class UserDeserialize
     {
         public static User FromJson(string json) => JsonConvert.DeserializeObject<User>(json, UserConverter.Settings);
     }

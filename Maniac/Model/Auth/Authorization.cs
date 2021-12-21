@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Maniac.Model.Auth
 {
-    public class Token
+    public class Authorization
     {
         [JsonProperty("token_type")]
         public string TokenType { get; set; }

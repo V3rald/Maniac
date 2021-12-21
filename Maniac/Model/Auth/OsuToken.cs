@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Maniac.Model.Auth
 {
-    public class GetToken
+    public class OsuToken
     {
         [JsonProperty("client_id")]
         public string ClientId { get; set; }
@@ -16,7 +16,7 @@ namespace Maniac.Model.Auth
         [JsonProperty("scope")]
         public string Scope { get; set; }
 
-        public GetToken(string clientId, string clientSecret, string grantType, string scope)
+        public OsuToken(string clientId, string clientSecret, string grantType, string scope)
         {
             ClientId = clientId;
             ClientSecret = clientSecret;

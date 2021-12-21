@@ -6,17 +6,20 @@ using Maniac.Common;
 using Maniac.Model;
 using Maniac.Model.Auth;
 using Maniac.Model.Beatmaps;
+using Maniac.Model.Common;
 using Maniac.Model.SelectMenu;
 using Maniac.Model.Users;
 using Maniac.Util;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static Maniac.Common.Constants;
+using static Maniac.Model.Converter.StatusConverter;
 
 namespace Maniac.Commands
 {
@@ -81,6 +84,8 @@ namespace Maniac.Commands
         [Command("c")]
         public async Task compare(CommandContext ctx, string userNameOrId = null)
         {
+            var timer = new Stopwatch();
+            timer.Start();
             LastBeatmap lastBeatmap = DB.getLastBeatmap();
             if(lastBeatmap == null)
             {
@@ -110,7 +115,7 @@ namespace Maniac.Commands
 
 
             GetBeatmap beatmap = BeatmapsService.GetBeatmap(Bot.Token.AccessToken, lastBeatmap.BeatmapId);
-            Model.Beatmaps.Beatmapset beatmapSet = beatmap.Beatmapset;
+            BeatmapSet beatmapSet = beatmap.BeatmapSet;
             BeatmapUserScore score = BeatmapsService.GetBeatmapUserScore(Bot.Token.AccessToken, lastBeatmap.BeatmapId, id, lastBeatmap.Mods);
 
             DiscordEmbedBuilder embedBuilder = new DiscordEmbedBuilder();
@@ -138,11 +143,15 @@ namespace Maniac.Commands
 
             DiscordEmbed recentEmbed = embedBuilder.Build();
             await ctx.Channel.SendMessageAsync(recentEmbed);
+            timer.Stop();
+            await ctx.Channel.SendMessageAsync(timer.ElapsedMilliseconds + "ms").ConfigureAwait(false);
         }
 
         [Command("r")]
         public async Task recent(CommandContext ctx, string userNameOrId=null)
         {
+            var timer = new Stopwatch();
+            timer.Start();
             if (string.IsNullOrEmpty(userNameOrId))
             {
                 ulong? getuser = DB.getUser(ctx.User.Id);
@@ -161,7 +170,7 @@ namespace Maniac.Commands
             {
                 UserScore score = recentActivity[0];
                 Model.Users.Beatmap beatmap = recentActivity[0].Beatmap;
-                Model.Users.Beatmapset beatmapSet = recentActivity[0].Beatmapset;
+                Beatmapset beatmapSet = recentActivity[0].Beatmapset;
 
                 DiscordEmbedBuilder embedBuilder = new DiscordEmbedBuilder();
                 embedBuilder.WithAuthor(String.Format("{0}: {1}pp | #{2} | {3} #{4} | [{5}]", user.Username, user.Statistics.Pp, user.Statistics.GlobalRank, user.CountryCode, user.Statistics.CountryRank, score.Mode));
@@ -196,9 +205,11 @@ namespace Maniac.Commands
             }
 
             Console.WriteLine(ctx.User.Username + $" used command: {ctx.Command.Name} {userNameOrId}");
+            timer.Stop();
+            await ctx.Channel.SendMessageAsync(timer.ElapsedMilliseconds + "ms").ConfigureAwait(false);
         }
 
-        [Command("search")]
+        [Command("s")]
         public async Task search(CommandContext ctx, params string[] args)
         {
             ulong messageId = ctx.Message.Id;

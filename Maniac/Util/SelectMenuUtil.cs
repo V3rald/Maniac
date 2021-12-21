@@ -1,9 +1,11 @@
 ﻿using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using Maniac.Api;
+using Maniac.Model;
 using Maniac.Model.Auth;
 using Maniac.Model.Beatmaps;
 using Maniac.Model.BeatmapSetMenu;
+using Maniac.Model.Common;
 using Maniac.Model.SelectMenu;
 using Newtonsoft.Json;
 using System;
@@ -11,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using static Maniac.Common.Constants;
+using static Maniac.Model.Converter.ModeConverter;
+using static Maniac.Model.Converter.StatusConverter;
 
 namespace Maniac.Util
 {
@@ -42,9 +46,9 @@ namespace Maniac.Util
         {
             List<DiscordSelectComponentOption> menuItems = new List<DiscordSelectComponentOption>();
 
-            for (int i = 0; i < Math.Min(25, beatmapMenu.Beatmapset.Beatmaps.Count); i++)
+            for (int i = 0; i < Math.Min(25, beatmapMenu.BeatmapSet.Beatmaps.Count); i++)
             {
-                var beatmap = beatmapMenu.Beatmapset.Beatmaps[i];
+                var beatmap = beatmapMenu.BeatmapSet.Beatmaps[i];
                 menuItems.Add(new DiscordSelectComponentOption($"{beatmap.Version}", $"beatmap:{i}", $"id: {beatmap.Id}"));
             }
 
@@ -60,14 +64,14 @@ namespace Maniac.Util
                 modsString.Add(((Mods)id).ToString());
             }
 
-            ModsMenu data = new ModsMenu(beatmapMenu.Query, beatmapMenu.Beatmapset, modsString);
+            ModsMenu data = new ModsMenu(beatmapMenu.Query, beatmapMenu.BeatmapSet, modsString);
             Menus[messageId] = JsonConvert.SerializeObject(data);
         }
 
         public static async void BeatmapInteraction(ComponentInteractionCreateEventArgs e, int id, ModsMenu modsMenu)
         {
             var builder = new DiscordMessageBuilder();
-            var beatmap = modsMenu.Beatmapset.Beatmaps[id];
+            var beatmap = modsMenu.BeatmapSet.Beatmaps[id];
             ulong? userId = DB.getUser(e.User.Id);
 
             if (userId.HasValue)
@@ -84,7 +88,7 @@ namespace Maniac.Util
                 if (string.IsNullOrEmpty(mods)) mods = "NM";
 
                 var embedBuilder = new DiscordEmbedBuilder();
-                embedBuilder.WithTitle(modsMenu.Beatmapset.Title + " - " + beatmap.Version);
+                embedBuilder.WithTitle(modsMenu.BeatmapSet.Title + " - " + beatmap.Version);
 
                 embedBuilder.AddField("SR", score.Score.Beatmap.DifficultyRating.ToString(), true);
                 embedBuilder.AddField("HP", score.Score.Beatmap.HP.ToString(), true);
@@ -110,6 +114,7 @@ namespace Maniac.Util
                 builder.WithEmbed(embedBuilder.Build());
 
                 await e.Message.ModifyAsync(builder).ConfigureAwait(false);
+                DB.setLastBeatmap(new LastBeatmap(beatmap.Id, score.Score.Mods));
 
                 return;
             }
@@ -122,8 +127,8 @@ namespace Maniac.Util
         {
             Status status = (Status)selectId;
             SearchBeatmap searchBeatmap = BeatmapsService.SearchBeatmap(Bot.Token.AccessToken, statusMenu.Query, status.ToString().ToLower());
-            var filteredBeatmapSets = searchBeatmap.Beatmapsets.Where(p => p.Beatmaps.Any(b => b.Mode == Mode.Mania)).ToList();
-            var beatmapSets = new List<Beatmapset>();
+            var filteredBeatmapSets = searchBeatmap.BeatmapSets.Where(p => p.Beatmaps.Any(b => b.Mode == Mode.Mania)).ToList();
+            var beatmapSets = new List<BeatmapSet>();
 
             List<DiscordSelectComponentOption> menuItems = new List<DiscordSelectComponentOption>();
             for (int i = 0; i < Math.Min(25, filteredBeatmapSets.Count); i++)

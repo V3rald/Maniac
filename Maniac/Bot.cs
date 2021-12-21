@@ -38,12 +38,12 @@ namespace Maniac
         public static DiscordClient Client { get; private set; }
         public static CommandsNextExtension Commands { get; private set; }
         public static Config Config { get; private set; }
-        public static Token Token { get; private set; }
+        public static Authorization Token { get; private set; }
         static async Task Run()
         {
             Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
 
-            Token = AuthService.GetToken(new GetToken(Config.ClientId, Config.ClientSecret, "client_credentials", "public"));
+            Token = AuthService.GetToken(new OsuToken(Config.ClientId, Config.ClientSecret, "client_credentials", "public"));
 
             Client = new DiscordClient(new DiscordConfiguration
             {

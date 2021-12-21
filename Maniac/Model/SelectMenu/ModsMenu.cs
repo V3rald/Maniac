@@ -1,4 +1,5 @@
 ﻿using Maniac.Model.Beatmaps;
+using Maniac.Model.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Maniac.Model.SelectMenu
     public class ModsMenu
     {
         public string Query { get; set; }
-        public Beatmapset Beatmapset { get; set; }
+        public BeatmapSet BeatmapSet { get; set; }
         public List<string> Mods { get; set; }
 
         //public ModsMenu(string query, Beatmapset beatmapset, List<int> mods)
@@ -25,10 +26,10 @@ namespace Maniac.Model.SelectMenu
         //    Mods = new List<string>(ModsString);
         //}
 
-        public ModsMenu(string query, Beatmapset beatmapset, List<string> mods)
+        public ModsMenu(string query, BeatmapSet beatmapset, List<string> mods)
         {
             Query = query;
-            Beatmapset = beatmapset;
+            BeatmapSet = beatmapset;
             Mods = mods;
         }
     }

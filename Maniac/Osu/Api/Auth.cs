@@ -11,6 +11,6 @@ namespace Maniac.Api
     public interface Auth
     {
         [Post("/oauth/token")]
-        Task<Token> GetToken([Body] GetToken getToken);
+        Task<Authorization> GetToken([Body] OsuToken getToken);
     }
 }

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using static Maniac.Common.Constants;
+using static Maniac.Model.Converter.ModeConverter;
+using static Maniac.Model.Converter.StatusConverter;
 
 namespace Maniac.Model.Users
 {

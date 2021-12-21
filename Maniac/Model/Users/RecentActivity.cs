@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Maniac.Model.Common;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,17 +21,9 @@ namespace Maniac.Model
         [JsonProperty("mode")]
         public string Mode { get; set; }
         [JsonProperty("beatmap")]
-        public BeatmapObject Beatmap { get; set; }
+        public Beatmap Beatmap { get; set; }
         [JsonProperty("user")]
         public UserObject User { get; set; }
-
-        public class BeatmapObject
-        {
-            [JsonProperty("title")]
-            public string Title { get; set; }
-            [JsonProperty("url")]
-            public string Url { get; set; }
-        }
 
         public class UserObject
         {

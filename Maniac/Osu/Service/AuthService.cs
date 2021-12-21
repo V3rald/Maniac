@@ -18,7 +18,7 @@ namespace Maniac.Api
             auth = RestService.For<Auth>(Bot.BaseUrl, new RefitSettings(new NewtonsoftJsonContentSerializer()));
         }
 
-        public static Token GetToken(GetToken getToken)
+        public static Authorization GetToken(OsuToken getToken)
         {
             return auth.GetToken(getToken).Result;
         }

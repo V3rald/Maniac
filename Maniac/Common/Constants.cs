@@ -14,25 +14,5 @@ namespace Maniac.Common
             DT,
             NC,
         }
-
-        public enum Mode
-        {
-            Fruits,
-            Mania,
-            Osu,
-            Taiko
-        }
-
-        public enum Status
-        {
-            Ranked,
-            Loved,
-            Graveyard,
-            Pending,
-            Approved,
-            Qualified,
-            Wip,
-            Any
-        }
     }
 }

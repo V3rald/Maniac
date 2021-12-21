@@ -33,7 +33,7 @@ namespace Maniac.Api
             {
                 return beatmaps.GetBeatmapUserScore(Bot.Token.AccessToken, beatmap, user, mods.ToArray()).Result;
             }
-            catch (WebException e)
+            catch (AggregateException e)
             {
                 return null;
             }
